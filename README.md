@@ -1,0 +1,4 @@
+kic
+===
+
+Kids Investment Company
