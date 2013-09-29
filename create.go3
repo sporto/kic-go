@@ -1,0 +1,17 @@
+package main
+
+import (
+	"fmt"
+	r "github.com/christopherhesse/rethinkgo"
+)
+
+func main() {
+	session, err := r.Connect("localhost:28015", "kic")
+	if err != nil {
+		fmt.Println("error connecting:", err)
+		return
+	}
+
+	record := r.Map{"name": "Nico", "initialBalance": 0}
+	r.Table("accounts").Insert(record).Run(session)
+}
