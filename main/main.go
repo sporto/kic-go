@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/sporto/kic/services"
+	"github.com/sporto/kic/services/accounts"
 )
 
 func main() {
-	services.UpdateAll()
+	accounts.UpdateAll()
 }

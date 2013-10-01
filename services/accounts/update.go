@@ -1,4 +1,4 @@
-package services
+package accounts
 
 import (
 	"fmt"
@@ -12,9 +12,5 @@ func UpdateAccount(account models.Account) {
 	// - update the balance
 	fmt.Println(account)
 
-	if account.LastInterestPaid {
-		fmt.Println("INteste paid")
-	} else {
-		fmt.Println("No")
-	}
+	PayInterest(account)
 }
