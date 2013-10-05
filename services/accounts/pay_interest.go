@@ -11,14 +11,9 @@ func PayInterest(account models.Account) {
 
 	days := 1.0
 
-	if account.LastInterestPaid == "" {
-		// calc the days
-	} else {
-		fmt.Println("Last interest paid on %v", account.LastInterestPaid)
-		// pay interest from yesterday
-	}
+	// dur := CalculateInterestDurationToPay(account)
 
-	int := misc.CalculateInterest(account.Balance, days, 3.5)
+	int := misc.CalculateInterest(account.CurrentBalance, days, 3.5)
 	fmt.Println("Interest paid %v", int)
 
 }

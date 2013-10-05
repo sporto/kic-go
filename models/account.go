@@ -1,7 +1,12 @@
 package models
 
+import (
+	"time"
+)
+
 type Account struct {
-	LastInterestPaid string
+	Name             string
+	LastInterestPaid time.Time
 	Id               string `json:"id,omitempty"` // (will appear in json as "id", and not be sent if empty)
-	Balance          float64
+	CurrentBalance   float64
 }
