@@ -5,8 +5,12 @@ import (
 	"time"
 )
 
-func CalculateInterestDurationToPay(account models.Account) (days time.Duration) {
-	now := time.Now()
-	days = account.LastInterestPaid.Sub(now)
+func CalculateInterestDurationToPay(account models.Account, to time.Time) (days time.Duration) {
+	zero := *new(time.Time)
+	if account.LastInterestPaid.Equal(zero) {
+		days = 0
+	} else {
+		days = to.Sub(account.LastInterestPaid)
+	}
 	return
 }

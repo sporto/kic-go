@@ -9,13 +9,16 @@ import (
 
 func TestNoDate(t *testing.T) {
 	account := models.Account{}
-	dur := CalculateInterestDurationToPay(account)
-	assert.Equal(t, dur, 1, "they should be equal")
+	now := time.Now()
+	dur := CalculateInterestDurationToPay(account, now)
+	assert.Equal(t, dur, 0, "they should be equal")
 }
 
 func TestDate(t *testing.T) {
-	ti := time.Now().AddDate(0, 0, -4)
+	now := time.Now()
+	ti := now.AddDate(0, 0, -4)
 	account := models.Account{LastInterestPaid: ti}
-	dur := CalculateInterestDurationToPay(account)
-	assert.Equal(t, dur, 4, "they should be equal")
+	dur := CalculateInterestDurationToPay(account, now)
+	expectedDur := now.Sub(ti)
+	assert.Equal(t, dur, expectedDur, "they should be equal")
 }
