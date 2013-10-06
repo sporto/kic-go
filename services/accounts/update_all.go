@@ -3,7 +3,7 @@ package accounts
 import (
 	"fmt"
 	r "github.com/christopherhesse/rethinkgo"
-	"github.com/sporto/kic/models"
+	"github.com/sporto/kic-api/models"
 )
 
 func UpdateAll() {

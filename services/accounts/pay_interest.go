@@ -2,8 +2,8 @@ package accounts
 
 import (
 	"fmt"
-	"github.com/sporto/kic/models"
-	"github.com/sporto/kic/services/misc"
+	"github.com/sporto/kic-api/models"
+	"github.com/sporto/kic-api/services/misc"
 )
 
 func PayInterest(account models.Account) {

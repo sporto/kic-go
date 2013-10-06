@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"fmt"
-	"github.com/sporto/kic/models"
+	"github.com/sporto/kic-api/models"
 )
 
 func UpdateAccount(account models.Account) {

@@ -1,7 +1,7 @@
 package accounts
 
 import (
-	"github.com/sporto/kic/models"
+	"github.com/sporto/kic-api/models"
 	"time"
 )
 
