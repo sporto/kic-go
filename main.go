@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	r "github.com/christopherhesse/rethinkgo"
+	"github.com/gorilla/mux"
 	"github.com/sporto/kic-api/models"
 	"log"
 	"net/http"
@@ -35,7 +36,13 @@ func main() {
 
 	initDb()
 
-	http.HandleFunc("/accounts", accountsIndex)
+	r := mux.NewRouter()
+
+	r.HandleFunc("/accounts", accountsIndex)
+	r.HandleFunc("/accounts/{id}", accountsShow)
+
+	http.Handle("/", r)
+
 	// http.HandleFunc("/new", insertBookmark)
 
 	err := http.ListenAndServe(":5000", nil)
@@ -63,6 +70,21 @@ func main() {
 // }
 
 func accountsIndex(res http.ResponseWriter, req *http.Request) {
+	session := sessionArray[0]
+	var response []models.Account
+
+	err := r.Table("accounts").Run(session).All(&response)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data, _ := json.Marshal(response)
+
+	res.Header().Set("Content-Type", "application/json")
+	res.Write(data)
+}
+
+func accountsShow(res http.ResponseWriter, req *http.Request) {
 	session := sessionArray[0]
 	var response []models.Account
 
