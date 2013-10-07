@@ -86,9 +86,12 @@ func accountsIndex(res http.ResponseWriter, req *http.Request) {
 
 func accountsShow(res http.ResponseWriter, req *http.Request) {
 	session := sessionArray[0]
-	var response []models.Account
+	var response models.Account
 
-	err := r.Table("accounts").Run(session).All(&response)
+	vars := mux.Vars(req)
+	id := vars["id"]
+
+	err := r.Table("accounts").Get(id).Run(session).One(&response)
 	if err != nil {
 		log.Fatal(err)
 	}
