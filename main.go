@@ -78,10 +78,12 @@ func accountsIndex(res http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 
-	data, _ := json.Marshal(response)
+	respondWith(res, req, response)
 
-	res.Header().Set("Content-Type", "application/json")
-	res.Write(data)
+	// data, _ := json.Marshal(response)
+
+	// res.Header().Set("Content-Type", "application/json")
+	// res.Write(data)
 }
 
 func accountsShow(res http.ResponseWriter, req *http.Request) {
@@ -92,10 +94,20 @@ func accountsShow(res http.ResponseWriter, req *http.Request) {
 	id := vars["id"]
 
 	err := r.Table("accounts").Get(id).Run(session).One(&response)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	respondWith(res, req, response)
+
+	// data, _ := json.Marshal(response)
+
+	// res.Header().Set("Content-Type", "application/json")
+	// res.Write(data)
+}
+
+func respondWith(res http.ResponseWriter, req *http.Request, response interface{}) {
 	data, _ := json.Marshal(response)
 
 	res.Header().Set("Content-Type", "application/json")
