@@ -1,9 +1,12 @@
 package main
 
 import (
+	"github.com/stretchr/codecs/services"
+	"github.com/stretchr/goweb"
+	"github.com/stretchr/goweb/handlers"
+	"github.com/stretchr/testify/assert"
+	testifyhttp "github.com/stretchr/testify/http"
 	"net/http"
-	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -11,16 +14,35 @@ func init() {
 	initDb()
 }
 
-func TestAccountsIndexReturnsWithStatusOK(t *testing.T) {
-	request, _ := http.NewRequest("GET", "/accounts", nil)
-	response := httptest.NewRecorder()
+func TestRoutes(t *testing.T) {
 
-	accountsIndex(response, request)
+	// make a test HttpHandler and use it
+	codecService := new(services.WebCodecService)
+	handler := handlers.NewHttpHandler(codecService)
+	goweb.SetDefaultHttpHandler(handler)
 
-	if response.Code != http.StatusOK {
-		t.Fatalf("Response body did not contain expected %v:\n\tbody: %v", "200", response.Code)
-	}
+	// call the target code
+	mapRoutes()
+
+	goweb.Test(t, "GET accounts/", func(t *testing.T, response *testifyhttp.TestResponseWriter) {
+
+		// should be 200
+		assert.Equal(t, http.StatusOK, response.WrittenHeaderInt, "Status code should be correct")
+
+	})
+
 }
+
+// func TestAccountsIndexReturnsWithStatusOK(t *testing.T) {
+// 	request, _ := http.NewRequest("GET", "/accounts", nil)
+// 	response := httptest.NewRecorder()
+
+// 	accountsIndex(response, request)
+
+// 	if response.Code != http.StatusOK {
+// 		t.Fatalf("Response body did not contain expected %v:\n\tbody: %v", "200", response.Code)
+// 	}
+// }
 
 // func TestHandInsertBookmarkWithStatusOK(t *testing.T) {
 // 	bookmark := Bookmark{"wercker", "http://wercker.com"}
@@ -41,14 +63,14 @@ func TestAccountsIndexReturnsWithStatusOK(t *testing.T) {
 // 	}
 // }
 
-func TestAccountsIndexReturnsJSON(t *testing.T) {
-	request, _ := http.NewRequest("GET", "/accounts", nil)
-	response := httptest.NewRecorder()
+// func TestAccountsIndexReturnsJSON(t *testing.T) {
+// 	request, _ := http.NewRequest("GET", "/accounts", nil)
+// 	response := httptest.NewRecorder()
 
-	accountsIndex(response, request)
+// 	accountsIndex(response, request)
 
-	ct := response.HeaderMap["Content-Type"][0]
-	if !strings.EqualFold(ct, "application/json") {
-		t.Fatalf("Content-Type does not equal 'application/json'")
-	}
-}
+// 	ct := response.HeaderMap["Content-Type"][0]
+// 	if !strings.EqualFold(ct, "application/json") {
+// 		t.Fatalf("Content-Type does not equal 'application/json'")
+// 	}
+// }

@@ -1,10 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	r "github.com/christopherhesse/rethinkgo"
-	"github.com/gorilla/mux"
-	"github.com/sporto/kic/api/models"
+	"github.com/sporto/kic/api/controllers"
+	"github.com/stretchr/goweb"
 	"log"
 	"net/http"
 )
@@ -18,6 +17,7 @@ func initDb() {
 		log.Fatal(err)
 		return
 	}
+	//defer session.Close()
 
 	err = r.DbCreate("kic").Run(session).Exec()
 	if err != nil {
@@ -32,84 +32,19 @@ func initDb() {
 	sessionArray = append(sessionArray, session)
 }
 
+func mapRoutes() {
+	accountsController := &controllers.Accounts{DbSession: sessionArray[0]}
+	goweb.MapController(accountsController)
+}
+
 func main() {
-
 	initDb()
+	mapRoutes()
 
-	r := mux.NewRouter()
-
-	r.HandleFunc("/accounts", accountsIndex)
-	r.HandleFunc("/accounts/{id}", accountsShow)
-
-	http.Handle("/", r)
-
-	// http.HandleFunc("/new", insertBookmark)
+	http.Handle("/", goweb.DefaultHttpHandler())
 
 	err := http.ListenAndServe(":5000", nil)
 	if err != nil {
 		log.Fatal("Error: %v", err)
 	}
-}
-
-// func insertBookmark(res http.ResponseWriter, req *http.Request) {
-// 	session := sessionArray[0]
-
-// 	b := new(Bookmark)
-// 	json.NewDecoder(req.Body).Decode(b)
-
-// 	var response r.WriteResponse
-
-// 	err := r.Table("bookmarks").Insert(b).Run(session).One(&response)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 		return
-// 	}
-// 	data, _ := json.Marshal("{'bookmark':'saved'}")
-// 	res.Header().Set("Content-Type", "application/json; charset=utf-8")
-// 	res.Write(data)
-// }
-
-func accountsIndex(res http.ResponseWriter, req *http.Request) {
-	session := sessionArray[0]
-	var response []models.Account
-
-	err := r.Table("accounts").Run(session).All(&response)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	respondWith(res, req, response)
-
-	// data, _ := json.Marshal(response)
-
-	// res.Header().Set("Content-Type", "application/json")
-	// res.Write(data)
-}
-
-func accountsShow(res http.ResponseWriter, req *http.Request) {
-	session := sessionArray[0]
-	var response models.Account
-
-	vars := mux.Vars(req)
-	id := vars["id"]
-
-	err := r.Table("accounts").Get(id).Run(session).One(&response)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	respondWith(res, req, response)
-
-	// data, _ := json.Marshal(response)
-
-	// res.Header().Set("Content-Type", "application/json")
-	// res.Write(data)
-}
-
-func respondWith(res http.ResponseWriter, req *http.Request, response interface{}) {
-	data, _ := json.Marshal(response)
-
-	res.Header().Set("Content-Type", "application/json")
-	res.Write(data)
 }
