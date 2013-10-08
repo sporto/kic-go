@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	r "github.com/christopherhesse/rethinkgo"
 	"github.com/gorilla/mux"
-	"github.com/sporto/kic-api/models"
+	"github.com/sporto/kic/api/models"
 	"log"
 	"net/http"
 )
