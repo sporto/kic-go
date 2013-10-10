@@ -13,6 +13,11 @@ type Accounts struct {
 	DbSession *r.Session
 }
 
+// func (c *Accounts) Options(ctx context.Context) error {
+// 	log.Println("Options for Account")
+// 	return nil
+// }
+
 func (c *Accounts) ReadMany(ctx context.Context) error {
 	var records []models.Account
 

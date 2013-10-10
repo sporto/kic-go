@@ -5,7 +5,7 @@ angular.module('APP')
     logger.info('Getting accounts');
     notifier.success('Getting accounts');
 
-    Account.getList()
+    Account.all.getList()
       .then(function (accounts) {
         logger.info('success');
         logger.info(accounts);

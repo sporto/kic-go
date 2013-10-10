@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('APP')
-  .factory('Account', function (Restangular, apiBase) {
-    return Restangular.all('accounts');
+  .factory('Account', function (Restangular) {
+    return {
+      all: Restangular.all('accounts')
+    }
   });
