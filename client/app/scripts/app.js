@@ -4,7 +4,7 @@ log.setLevel('info');
 
 var app = angular.module('APP', ['restangular']);
 
-app.constant('apiBase', '//localhost:5000');
+app.constant('apiBase', '/api');
 
 app.config(function ($routeProvider, $httpProvider, RestangularProvider) {
 
