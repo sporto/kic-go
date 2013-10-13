@@ -1,0 +1,25 @@
+{
+  "name": "KIC",
+  "version": "0.0.0",
+  "description": "KIC ===",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sporto/kic.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "readme.md",
+  "gitHead": "c8c7b164dc87bc58dd2b77cdfe6236f8b24a75e5",
+  "bugs": {
+    "url": "https://github.com/sporto/kic/issues"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-shell": "~0.5.0",
+    "grunt-forever": "~0.4.1"
+  }
+}

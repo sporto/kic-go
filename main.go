@@ -36,6 +36,9 @@ func mapRoutes() {
 	accountsController := &controllers.Accounts{DbSession: sessionArray[0]}
 
 	goweb.MapController("/api/accounts", accountsController)
+
+	goweb.MapStatic("/public", "src")
+	goweb.MapStaticFile("/index.html", "src/index.html")
 }
 
 func main() {

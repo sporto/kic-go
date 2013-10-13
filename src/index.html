@@ -1,0 +1,40 @@
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KIC</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+ 
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/toastr.css">
+    <!-- endbuild -->
+</head>
+  <body ng-app="APP">
+    INDEX
+    <div class="container" ng-view=""></div>
+ 
+    <!-- build:js js/libs.js -->
+    <script src="/js/libs/jquery.js"></script>
+    <script src="/js/libs/underscore.js"></script>
+    <script src="/js/libs/angular.js"></script>
+    <script src="/js/libs/loglevel.js"></script>
+    <script src="/js/libs/toastr.js"></script>
+    <!-- endbuild -->
+ 
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/accounts.js"></script>
+    <script src="scripts/services/account.js"></script>
+    <script src="scripts/services/logger.js"></script>
+    <script src="scripts/services/apiUrl.js"></script>
+    <script src="scripts/services/notifier.js"></script>
+    <!-- endbuild -->
+</body>
+</html>
