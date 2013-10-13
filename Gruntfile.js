@@ -7,17 +7,17 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
 
-    forever: {
-      options: {
-        index: 'main.go',
-        command: 'go run'
-      }
-    },
+    // forever: {
+    //   options: {
+    //     index: 'main.go',
+    //     command: 'go run'
+    //   }
+    // },
 
     watch: {
       go: {
         files: ['**/*.go'],
-        tasks: ['forever:restart'],
+        tasks: ['start'],
         options: {
           spawn: false,
         },
@@ -35,9 +35,38 @@ module.exports = function(grunt) {
     }
   });
 
+  // exit is working
+  // but watch on changes is not
+  // ALSO show GO errors
+
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-forever');
+  // grunt.loadNpmTasks('grunt-forever');
+
+  var serverProcess;
+
+  grunt.registerTask('start', function () {
+    
+    grunt.log.writeln('start...');
+
+    serverProcess = grunt.util.spawn({
+        cmd: 'go', 
+        args: ['run','main.go']
+      });
+
+    grunt.task.run('watch');
+  });
+
+  grunt.registerTask('killServer', function () {
+    grunt.log.writeln('killServer');
+
+    if (serverProcess) serverProcess.kill();
+  });
 
   grunt.registerTask('default', ['watch']);
+
+  process.on('exit', function () {
+    grunt.log.writeln('exit...');
+    grunt.task.run('killServer');
+  });
 
 };
