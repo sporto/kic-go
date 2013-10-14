@@ -88,6 +88,9 @@ func main() {
 	signal.Notify(signalChannel, os.Interrupt)
 
 	go func() {
+		// s := <-signalChannel
+		// log.Println("Got signal: ", s)
+
 		for _ = range signalChannel {
 			// sig is a ^C, handle it
 			log.Println("^C")

@@ -45,6 +45,7 @@ module.exports = function(grunt) {
       }
     });
     
+    // serverProcess is not the go process itself
     serverProcess.stdout.pipe(process.stdout);
     serverProcess.stderr.pipe(process.stderr);
 
@@ -63,6 +64,10 @@ module.exports = function(grunt) {
   //done is the async callback coming from start
   grunt.event.on('goserver.stop', function (done) {
     grunt.log.writeln('goserver.stop');
+    grunt.log.writeln('Sending signal to process ' + serverProcess.pid)
+
+    // serverProcess.send('CLOSE');
+    // return done();
 
     serverProcess.kill('SIGINT');
 
