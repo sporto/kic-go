@@ -47,7 +47,7 @@ func mapRoutes() {
 	goweb.MapController("/api/accounts", accountsController)
 
 	goweb.MapStatic("/public", "src")
-	goweb.MapStaticFile("/", "src/index.html")
+	// goweb.MapStaticFile("/", "src/index.html")
 	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")
 
 	// Catch-all handler for everything that we don't understand
@@ -87,21 +87,12 @@ func main() {
 
 	go func() {
 		for _ = range c {
-
 			// sig is a ^C, handle it
-
 			// stop the HTTP server
 			log.Print("Stopping the server...")
 			listener.Close()
 
-			/*
-			   Tidy up and tear down
-			*/
-			log.Print("Tearing down...")
-
-			// TODO: tidy code up here
-			log.Fatal("Finished - bye bye.  ;-)")
-
+			os.Exit(0)
 		}
 	}()
 
