@@ -24,6 +24,7 @@ func initDb() {
 	session, err := r.Connect("localhost:28015", "kic")
 	if err != nil {
 		log.Fatal(err)
+		log.Println("Most likely RethinkDB is not running")
 		return
 	}
 	//defer session.Close()

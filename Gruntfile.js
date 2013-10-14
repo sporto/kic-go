@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     watch: {
       go: {
         files: ['**/*.go'],
-        tasks: ['goserver:start'],
+        tasks: ['goserver'],
         options: {
           nospawn: true,
         },
@@ -23,20 +23,11 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.event.on('goserver:started', function () {
-    grunt.log.writeln('goserver:started');
-  });
-
-  grunt.event.on('goserver.stopped', function () {
-    grunt.log.writeln('goserver.stopped');
-    return grunt.task.run('goserver:start');
-  });
-
-  grunt.registerTask('goserver:start', function () {
-    grunt.log.writeln('goserver:start');
+  grunt.event.on('goserver.start', function (done) {
+    grunt.log.writeln('goserver.start');
 
     if (serverProcess) {
-      return grunt.task.run('goserver:stop');
+      return grunt.event.emit('goserver.stop', done)
     }
 
     grunt.log.writeln('spawning new process');
@@ -58,18 +49,39 @@ module.exports = function(grunt) {
     serverProcess.stderr.pipe(process.stderr);
 
     grunt.log.writeln('spawned ' + serverProcess.pid);
-    grunt.event.emit('goserver.started');
-  });
-
-  grunt.registerTask('goserver:stop', function () {
-    grunt.log.writeln('goserver:stop');
-
-    serverProcess.kill('SIGINT');
-    serverProcess = null;
 
     setTimeout(function () {
-      grunt.event.emit('goserver.stopped');
+      grunt.event.emit('goserver.started', done);
+    }, 250);
+  });
+
+  grunt.event.on('goserver.started', function (done) {
+    grunt.log.writeln('goserver.started');
+    done();
+  });
+
+  //done is the async callback coming from start
+  grunt.event.on('goserver.stop', function (done) {
+    grunt.log.writeln('goserver.stop');
+
+    serverProcess.kill('SIGINT');
+
+    grunt.log.writeln('Waiting for the Go process to die')
+
+    setTimeout(function () {
+      serverProcess = null;
+      grunt.event.emit('goserver.stopped', done);
     }, 1500);
+  });
+
+  grunt.event.on('goserver.stopped', function (done) {
+    grunt.log.writeln('goserver.stopped');
+    return grunt.event.emit('goserver.start', done);
+  });
+
+  grunt.registerTask('goserver', function () {
+    var done = this.async();
+    grunt.event.emit('goserver.start', done);
   });
 
   // kill the server process when grunt exits
@@ -80,7 +92,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('start', function () {
-    grunt.task.run('goserver:start');
+    grunt.task.run('goserver');
     grunt.task.run('watch');
   });
 
