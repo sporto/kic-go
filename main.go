@@ -48,7 +48,7 @@ func mapRoutes() {
 	goweb.MapController("/api/accounts", accountsController)
 
 	goweb.MapStatic("/public", "src")
-	// goweb.MapStaticFile("/", "src/index.html")
+	goweb.MapStaticFile("/", "src/index.html")
 	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")
 
 	// Catch-all handler for everything that we don't understand
@@ -73,10 +73,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
 	listener, listenErr := net.Listen("tcp", Address)
-
 	log.Printf("  visit: %s", Address)
 
 	if listenErr != nil {
@@ -86,11 +83,16 @@ func main() {
 	log.Println("Routes:")
 	log.Printf("%s", goweb.DefaultHttpHandler())
 
+	// listen for exit signal i.e. ctrl + C
+	signalChannel := make(chan os.Signal, 1)
+	signal.Notify(signalChannel, os.Interrupt)
+
 	go func() {
-		for _ = range c {
+		for _ = range signalChannel {
 			// sig is a ^C, handle it
+			log.Println("^C")
 			// stop the HTTP server
-			log.Print("Stopping the server...")
+			log.Println("Stopping the server...")
 			listener.Close()
 
 			os.Exit(0)
