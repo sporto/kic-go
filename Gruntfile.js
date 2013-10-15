@@ -34,6 +34,7 @@ module.exports = function(grunt) {
     }
 
     grunt.log.writeln('spawning new process');
+
     serverProcess = grunt.util.spawn({
       cmd: 'go', 
       args: ['run', 'main.go']
@@ -48,7 +49,6 @@ module.exports = function(grunt) {
       }
     });
     
-    // serverProcess is not the go process itself
     serverProcess.stdout.pipe(process.stdout);
     serverProcess.stderr.pipe(process.stderr);
 
@@ -69,17 +69,30 @@ module.exports = function(grunt) {
     grunt.log.writeln(serverProcessEventStop);
     grunt.log.writeln('Sending signal to process ' + serverProcess.pid)
 
-    // serverProcess.send('CLOSE');
-    // return done();
+    // process doesn't DIE !!!
 
-    serverProcess.kill('SIGINT');
+    serverProcess.on('exit', function () {
+      grunt.log.writeln('EXIT EXIT')
+    });
+
+    serverProcess.kill('SIGTERM');
 
     grunt.log.writeln('Waiting for the Go process to die')
 
-    setTimeout(function () {
-      serverProcess = null;
-      grunt.event.emit(serverProcessEventStopped, done);
-    }, 1500);
+    // function checkKilled () {
+    //   grunt.log.writeln('checkKilled')
+    //   grunt.log.writeln(serverProcess.killed)
+    //   grunt.log.writeln(serverProcess.exitCode);
+
+    //   if (serverProcess.exitCode === 0) {
+    //     serverProcess = null;
+    //     grunt.event.emit(serverProcessEventStopped, done);
+    //   } else {
+    //     setTimeout(checkKilled, 250);
+    //   }
+    // }
+
+    // checkKilled();
   });
 
   grunt.event.on(serverProcessEventStopped, function (done) {
