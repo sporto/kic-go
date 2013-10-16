@@ -27,7 +27,6 @@ func (c *Accounts) ReadMany(ctx context.Context) error {
 		log.Fatal(err)
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
-
 	return goweb.API.RespondWithData(ctx, records)
 }
 
