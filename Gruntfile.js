@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-  var rerunProcess;
+  var childProcesses = [];
   var util = require('util');
 
   // Project configuration.
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerMultiTask('goserver', 'Starts and reloads Go server', function () {
-    rerunProcess =  grunt.util.spawn({
+    var childProcess =  grunt.util.spawn({
       cmd: 'rerun',
       args: [this.data.package],
       options: {
@@ -47,15 +47,18 @@ module.exports = function(grunt) {
       }
     });
     
-    rerunProcess.stdout.pipe(process.stdout);
-    rerunProcess.stderr.pipe(process.stderr);
+    childProcess.stdout.pipe(process.stdout);
+    childProcess.stderr.pipe(process.stderr);
 
-    grunt.log.writeln('spawned ' + rerunProcess.pid);
+    grunt.log.writeln('spawned ' + childProcess.pid);
+
+    childProcesses.push(childProcess);
   });
 
   grunt.registerTask('goserver:stop', 'Stops the Go server watcher', function () {
-    if (rerunProcess) {
-      rerunProcess.kill('SIGINT');
+    for (var i= 0; i < childProcesses.length; i++) {
+      var p = childProcesses[a];
+      if (p) p.kill('SIGINT');
     }
   });
 
