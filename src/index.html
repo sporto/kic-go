@@ -8,31 +8,21 @@
 
 		<!-- build:css(.tmp) css/all.css -->
 		<link rel="stylesheet" href="/public/css/app/main.css">
-        <link rel="stylesheet" href="/public/css/lib/toastr.css">
+		<link rel="stylesheet" href="/public/css/lib/toastr.css">
 		<link rel="stylesheet" href="/public/css/lib/bootstrap.css">
 		<!-- endbuild -->
-	</head>
-  <body ng-app="APP">
 
-    <div class="container" ng-view=""></div>
- 
-    <!-- build:js js/libs.js -->
-    <script src="/public/js/libs/jquery.js"></script>
-    <script src="/public/js/libs/underscore.js"></script>
-    <script src="/public/js/libs/loglevel.js"></script>
-    <script src="/public/js/libs/toastr.js"></script>
-    <script src="/public/js/libs/angular.js"></script>
-    <script src="/public/js/libs/angular-route.js"></script>
-    <script src="/public/js/libs/restangular.js"></script>
-    <!-- endbuild -->
- 
-    <!-- build:js({.tmp,app}) js/app.js -->
-    <script src="public/js/app/app.js"></script>
-    <script src="public/js/app/controllers/main.js"></script>
-    <script src="public/js/app/controllers/accounts.js"></script>
-    <script src="public/js/app/services/account.js"></script>
-    <script src="public/js/app/services/logger.js"></script>
-    <script src="public/js/app/services/notifier.js"></script>
-    <!-- endbuild -->
-</body>
+		<script data-main="public/js/app" src="public/js/lib/require.js"></script>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script type="text/mustache" id="app-template">
+			HELLO
+			{{title}}
+			<div class='accounts'></div>
+		</script>
+		<script type="text/mustache" id="accounts-template">
+			Accounts
+		</script>
+	</body>
 </html>
