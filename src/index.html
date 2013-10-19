@@ -22,7 +22,16 @@
 			<div class='accounts'></div>
 		</script>
 		<script type="text/mustache" id="accounts-template">
-			Accounts
+			<h1>Accounts</h1>
+			<table class="table">
+				<tbody>
+					{{#accounts}}
+					<tr>
+						<td>{{Name}}</td>
+					</tr>
+					{{/accounts}}
+				</tbody>
+			</table>
 		</script>
 	</body>
 </html>
