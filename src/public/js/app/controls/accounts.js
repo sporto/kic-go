@@ -1,6 +1,8 @@
-define(['can', '../models/account'], function (can, Account) {
+define(['logger', 'can', '../models/account'], function (logger, can, Account) {
 
 	"use strict";
+
+	logger.info('AccountsCtrl loaded');
 
 	return can.Control({
 		init: function (ele, options) {
@@ -13,11 +15,11 @@ define(['can', '../models/account'], function (can, Account) {
 
 			this.element.html(can.view('accounts-template', {accounts: this.accounts, state: this.state}));
 
-			console.log('getting accounts');
+			// console.log('getting accounts');
 
 			Account.findAll({}, function (accounts) {
-				console.log('Got accounts')
-				console.log(accounts);
+				// console.log('Got accounts')
+				// console.log(accounts);
 				self.accounts.replace(accounts);
 			}, function (xhr) {
 				console.log('errorp')

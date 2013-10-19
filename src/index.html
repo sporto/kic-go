@@ -23,11 +23,12 @@
 		</script>
 		<script type="text/mustache" id="accounts-template">
 			<h1>Accounts</h1>
+			<p><a href="#!accounts">All accounts</a></p>
 			<table class="table">
 				<tbody>
 					{{#accounts}}
 					<tr>
-						<td>{{Name}}</td>
+						<td><a href='#!accounts/{{id}}'>{{Name}}</a></td>
 					</tr>
 					{{/accounts}}
 				</tbody>
