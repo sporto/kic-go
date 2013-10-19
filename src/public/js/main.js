@@ -1,13 +1,7 @@
-requirejs.config({
-	baseUrl: 'public/js/lib',
-	paths: {
-		app: '../app'
-	}
-});
-
-require(["can", "app/controls/accounts"], function(can, AccountsCtrl) {
+require(['can', 'js/app/controls/accounts'], function(can, AccountsCtrl) {
 
 	'use strict';
+
 
 	// log.setLevel('info');
 	var Control = can.Control({

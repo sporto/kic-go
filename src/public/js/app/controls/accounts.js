@@ -1,4 +1,4 @@
-define(['can', 'app/models/account'], function (can, Account) {
+define(['can', '../models/account'], function (can, Account) {
 
 	"use strict";
 
