@@ -1,0 +1,37 @@
+<div class="row">
+	<h1>Account</h1>
+</div>
+
+<div class="row">
+	<table class="table">
+
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{account.id}}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{account.Name}}</td>
+			</tr>
+			<tr>
+				<th>Last Interest Paid</th>
+				<td>{{account.LastInterestPaid}}</td>
+			</tr>
+			<tr>
+				<th>Current Balance</th>
+				<td>{{account.CurrentBalance}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="row">
+	<a class="btn" ng-href="#accounts/{{account.id}}/deposit">New Deposit</a>
+	<a class="btn" ng-href="#accounts/{{account.id}}/withdrawl">New Withdrawal</a>
+</div>
+
+<div class="row">
+	<h2>Transactions</h2>
+</div>
+

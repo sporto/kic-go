@@ -47,7 +47,7 @@ func mapRoutes() {
 
 	goweb.MapController("/api/accounts", accountsController)
 
-	goweb.MapStatic("/public", "src")
+	goweb.MapStatic("/public", "src/public")
 	goweb.MapStaticFile("/", "src/index.html")
 	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")
 
