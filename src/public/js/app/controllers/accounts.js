@@ -24,6 +24,7 @@ angular.module('APP')
 	.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier) {
 		var id = $routeParams.id;
 
+		logger.info('Getting account', id);
 		$scope.account = Account.one($routeParams.id).get();
 		// get the latest transactions
 		// $scope.transactions = Account.one(id).all('transactions').getList();

@@ -21,6 +21,10 @@ app.config(function($routeProvider, $httpProvider, RestangularProvider) {
 			templateUrl: 'public/views/accounts/show.html',
 			controller: 'AccountsShowCtrl'
 		})
+		.when('/accounts/:accountId/transactions/new', {
+			templateUrl: 'public/views/transactions/new.html',
+			controller: 'TransactionsNewCtrl'
+		})
 		.otherwise({
 			redirectTo: '/'
 		});
