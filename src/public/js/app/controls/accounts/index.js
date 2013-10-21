@@ -1,4 +1,4 @@
-define(['logger', 'can', '../models/account'], function (logger, can, Account) {
+define(['logger', 'can', '../../models/account'], function (logger, can, Account) {
 
 	"use strict";
 

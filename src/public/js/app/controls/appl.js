@@ -1,4 +1,15 @@
-define(['logger', 'can', 'js/app/controls/router', 'js/app/controls/accounts'], function(logger, can, Router, AccountsCtrl) {
+define([
+	'logger', 
+	'can', 
+	'js/app/controls/accounts/index',
+	'js/app/controls/accounts/show',
+	], 
+	function(
+		logger, 
+		can, 
+		AccountsIndexCtrl,
+		AccountsShowCtrl
+	) {
 
 	'use strict';
 
@@ -10,15 +21,16 @@ define(['logger', 'can', 'js/app/controls/router', 'js/app/controls/accounts'], 
 		}
 	}, {
 		init: function(el, options) {
+
 			var state = can.Map({
 				title: 'Hello'
 			});
+
 			this.element.append(can.view(this.options.view, state));
 
-			new AccountsCtrl($('.accounts', this.element));
+			this.$view = $('.view', this.element);
 
 			can.route.ready(false);
-
 		},
 
 		'accounts route': 'accounts',
@@ -26,11 +38,13 @@ define(['logger', 'can', 'js/app/controls/router', 'js/app/controls/accounts'], 
 
 		accounts: function () {
 			logger.info('accounts');
+			new AccountsIndexCtrl(this.$view);
 		},
 
 		account: function (data) {
 			logger.info('route accounts/id');
 			logger.info(data.id);
+			new AccountsShowCtrl(this.$view);
 		},
 
 	});
