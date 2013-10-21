@@ -1,19 +1,24 @@
 <div class="row">
-	<h2>New {{kind}}</h2>
+	<h2>New {{transaction.kind}}</h2>
 	<hr>
+	<p>Account Id: {{account.id}}</p>
 	<p>Account Name: {{account.Name}}</p>
 	<hr>
 </div>
 
-<div class="row">
+<div class="row" ng-show="state.busy">
+	Loading
+</div>
+
+<div class="row" ng-hide="state.busy">
+
 	<form role="form">
-	  <div class="form-group">
-	    <label for="amount">Amount</label>
-	    <input type="number" class="form-control" placeholder="Amount">
-	  </div>
+		<div class="form-group">
+			<label for="amount">Amount</label>
+			<input type="number" class="form-control" placeholder="Amount" ng-model="transaction.amount" />
+		</div>
 
-
-	  <button type="submit" class="btn btn-default">Submit</button>
+	  <button type="submit" class="btn btn-default" ng-click='submit()'>Submit</button>
 	  &nbsp;
 	  <a ng-href="#accounts/{{account.id}}">Cancel</a>
 	</form>

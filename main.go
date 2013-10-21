@@ -2,9 +2,8 @@ package main
 
 import (
 	r "github.com/christopherhesse/rethinkgo"
-	"github.com/sporto/kic/api/controllers"
+	"github.com/sporto/kic/api"
 	"github.com/stretchr/goweb"
-	"github.com/stretchr/goweb/context"
 	"log"
 	"net"
 	"net/http"
@@ -39,28 +38,17 @@ func initDb() {
 		log.Println(err)
 	}
 
+	err = r.TableCreate("transactions").Run(session).Exec()
+	if err != nil {
+		log.Println(err)
+	}
+
 	sessionArray = append(sessionArray, session)
-}
-
-func mapRoutes() {
-	accountsController := &controllers.Accounts{DbSession: sessionArray[0]}
-
-	goweb.MapController("/api/accounts", accountsController)
-
-	goweb.MapStatic("/public", "src/public")
-	goweb.MapStaticFile("/", "src/index.html")
-	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")
-
-	// Catch-all handler for everything that we don't understand
-	goweb.Map(func(c context.Context) error {
-		// just return a 404 message
-		return goweb.API.Respond(c, 404, nil, []string{"File not found"})
-	})
 }
 
 func main() {
 	initDb()
-	mapRoutes()
+	api.MapRoutes(sessionArray)
 
 	log.Print("Starting Goweb powered server...")
 

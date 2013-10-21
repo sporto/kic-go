@@ -17,7 +17,7 @@ app.config(function($routeProvider, $httpProvider, RestangularProvider) {
 			templateUrl: 'public/views/accounts/index.html',
 			controller: 'AccountsIndexCtrl'
 		})
-		.when('/accounts/:id', {
+		.when('/accounts/:accountId', {
 			templateUrl: 'public/views/accounts/show.html',
 			controller: 'AccountsShowCtrl'
 		})

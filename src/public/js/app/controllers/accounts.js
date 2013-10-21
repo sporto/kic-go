@@ -18,14 +18,12 @@ angular.module('APP')
 					notifier.error(err);
 				});
 
-		
-
 	})
 	.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier) {
-		var id = $routeParams.id;
+		var id = $routeParams.accountId;
 
 		logger.info('Getting account', id);
-		$scope.account = Account.one($routeParams.id).get();
+		$scope.account = Account.one(id).get();
 		// get the latest transactions
 		// $scope.transactions = Account.one(id).all('transactions').getList();
 	});
