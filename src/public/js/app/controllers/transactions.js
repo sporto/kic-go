@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('APP')
-	.controller('TransactionsNewCtrl', function($scope, $routeParams, logger, notifier, Account) {
+	.controller('TransactionsNewCtrl', function($scope, $routeParams, $location, logger, notifier, Account) {
 		logger.info('TransactionsNewCtrl');
 		var id = $routeParams.accountId;
 
@@ -28,6 +28,7 @@ angular.module('APP')
 				.then(function () {
 					notifier.success('Saved');
 					$scope.state.busy = false;
+					$location.path('/accounts/' + $scope.account.id);
 				});
 		}
 	})
