@@ -3,6 +3,7 @@ package controllers
 import (
 	r "github.com/christopherhesse/rethinkgo"
 	"github.com/sporto/kic/api/models"
+	"github.com/sporto/kic/api/services/transactions"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 	"log"
@@ -47,14 +48,13 @@ func (c *AccountTransactions) Create(ctx context.Context) error {
 
 	t := time.Now()
 	transaction := models.Transaction{
-		AccountId:  accountId, 
-		CreatedAt:  t,
-		Amount:     dataMap["amount"].(float64),
-		Kind:       dataMap["kind"].(string),
+		AccountId: accountId,
+		CreatedAt: t,
+		Amount:    dataMap["amount"].(float64),
+		Kind:      dataMap["kind"].(string),
 	}
 
-	var record r.WriteResponse
-	err = r.Table("transactions").Insert(transaction).Run(c.DbSession).One(&record)
+	record, err := transactions.Create(c.DbSession, transaction)
 
 	if err != nil {
 		log.Fatal(err)

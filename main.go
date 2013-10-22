@@ -19,14 +19,12 @@ const (
 var sessionArray []*r.Session
 
 func initDb() {
-	// session, err := r.Connect(os.Getenv("WERCKER_RETHINKDB_URL"), "gettingstarted")
 	session, err := r.Connect("localhost:28015", "kic")
 	if err != nil {
 		log.Fatal(err)
 		log.Println("Most likely RethinkDB is not running")
 		return
 	}
-	//defer session.Close()
 
 	err = r.DbCreate("kic").Run(session).Exec()
 	if err != nil {
@@ -76,8 +74,6 @@ func main() {
 	signal.Notify(signalChannel, os.Interrupt)
 
 	go func() {
-		// s := <-signalChannel
-		// log.Println("Got signal: ", s)
 
 		for _ = range signalChannel {
 			// sig is a ^C, handle it
@@ -93,9 +89,4 @@ func main() {
 	// begin the server
 	log.Fatalf("Error in Serve: %s", s.Serve(listener))
 
-	/*
-
-	   END OF WEB SERVER CODE
-
-	*/
 }
