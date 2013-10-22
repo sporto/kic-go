@@ -4,21 +4,20 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	// "github.com/sporto/kic/api/models"
-	// "github.com/stretchr/testify/assert"
-	// "testing"
-	// "time"
 )
 
-// func TestNoAccountId(t *testing.T) {
-
-// 	// account := models.Account{}
-// 	// now := time.Now()
-// 	// dur := CalculateInterestDurationToPay(account, now)
-// 	// assert.Equal(t, dur, 0, "they should be equal")
-// }
-
 var _ = Describe("Create", func() {
-	It("works", func() {
+	It("fails when no account id provided", func() {
 		Expect(1).To(Equal(1))
 	})
+
+	It("fails if the account id doesn't exist")
+
+	It("fails if the transaction is already saved")
+
+	It("fails if the account doesn't have enough balance")
+
+	It("Saves the transaction")
+
+	It("Updates the account balance")
 })
