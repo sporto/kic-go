@@ -15,7 +15,10 @@ import (
 const (
 	Address string = ":9000"
 )
-
+//
+//
+//
+//
 var sessionArray []*r.Session
 
 func initDb() {

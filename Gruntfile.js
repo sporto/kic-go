@@ -1,70 +1,32 @@
 module.exports = function(grunt) {
 
-  var childProcesses = [];
-  var util = require('util');
-
   // Project configuration.
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
 
     watch: {
-      // go: {
-      //   files: ['**/*.go'],
-      //   tasks: ['goserver'],
-      //   options: {
-      //     nospawn: true,
-      //   },
-      // },
+      go: {
+        files: ['**/*.go'],
+        tasks: ['goserver'],
+        options: {
+          nospawn: true,
+        }
+      }
     },
 
     goserver: {
       default: {
-        package: 'github.com/sporto/kic',
-        cwd: '/Users/sebastian/GoDev/src'
+        srcPath: '/Users/Sebastian/GoDev/src/github.com/sporto/kic',
+        srcFile: 'main',
+        binPath: '/Users/Sebastian/GoDev/bin'
       }
     }
 
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
-
-  grunt.registerMultiTask('goserver', 'Starts and reloads Go server', function () {
-    var childProcess =  grunt.util.spawn({
-      cmd: 'rerun',
-      args: [this.data.package],
-      options: {
-        cwd: this.data.cwd
-      }
-    }, function (error, result, code) {
-      // grunt.log.writeln(error);
-    })
-    .on('exit', function (code, signal) {
-      if (signal !== null) {
-        grunt.log.warn(util.format('application exited with signal %s', signal));
-      } else {
-        grunt.log.warn(util.format('application exited with code %s', code));
-      }
-    });
-    
-    childProcess.stdout.pipe(process.stdout);
-    childProcess.stderr.pipe(process.stderr);
-
-    grunt.log.writeln('spawned ' + childProcess.pid);
-
-    childProcesses.push(childProcess);
-  });
-
-  grunt.registerTask('goserver:stop', 'Stops the Go server watcher', function () {
-    for (var i= 0; i < childProcesses.length; i++) {
-      var p = childProcesses[a];
-      if (p) p.kill('SIGINT');
-    }
-  });
-
-  process.on('exit', function() {
-    grunt.task.run('goserver:stop');
-  });
+  require('./grunt_go')(grunt);
 
   grunt.registerTask('start', function () {
     grunt.task.run('goserver');
