@@ -26,7 +26,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
-  require('./grunt_go')(grunt);
+  grunt.loadNpmTasks('grunt-goserver');
 
   grunt.registerTask('start', function () {
     grunt.task.run('goserver');
