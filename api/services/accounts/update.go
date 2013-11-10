@@ -1,16 +1,25 @@
 package accounts
 
 import (
-	"fmt"
+	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
+	"errors"
+	"time"
 )
 
-func UpdateAccount(account models.Account) {
-	// check when was the last time interest was paid
-	// loop through each day
-	// - pay interest
-	// - update the balance
-	fmt.Println(account)
+type UpdateServ struct {
+}
 
-	PayInterest(account)
+func (serv *UpdateServ) Run(dbSession *r.Session, account models.Account) (err error) {
+	//map[string]interface{}
+
+	account.UpdatedAt = time.Now()
+
+	response, err := r.Table("accounts").Get(id).Update(account).RunRow(dbSession)
+
+	if err != nil {
+		return
+	}
+
+	return
 }

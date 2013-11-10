@@ -8,6 +8,7 @@ import (
 )
 
 func MapRoutes(sessionArray []*r.Session) {
+  //
 	accounts := &controllers.Accounts{DbSession: sessionArray[0]}
 	goweb.MapController(accounts)
 	
