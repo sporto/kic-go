@@ -1,7 +1,6 @@
 package accounts
 
 import (
-	// "fmt"
 	"github.com/sporto/kic/api/models"
 	r "github.com/dancannon/gorethink"
 )
@@ -9,13 +8,22 @@ import (
 type UpdateBalanceServ struct {
 }
 
-func (serv *UpdateBalanceServ) Run(dbSession *r.Session, account models.Account) (err error) {
-	// dur, err := new(CalculateInterestDurationToPayServ).Run(account)
-	// if err != null {
-	// 	return
-	// }
+// Updates the balance
+// And saves the account
+func (serv *UpdateBalanceServ) Run(dbSession *r.Session, account *models.Account) (err error) {
 
-	// interest := misc.CalculateInterest(account.CurrentBalance, days, 3.5)
-	// fmt.Println("Interest paid %v", int)
+	interest, err := new(CalculateInterestToPayServ).Run(*account)
+	if err != nil {
+		return
+	}
+
+	account.CurrentBalance += interest
+
+	updateServ := new(UpdateServ)
+	err = updateServ.Run(dbSession, *account)
+	if err != nil {
+		return
+	}
+
 	return
 }

@@ -5,6 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 	"math"
 	"fmt"
+  "time"
 	"github.com/sporto/kic/api/services/misc"
 )
 
@@ -15,14 +16,15 @@ var _ = Describe("CalculateServ", func() {
 	)
 
 	It("Calculates the right interest", func () {
-		fmt.Println("xcvljsdlfjasljfkladsjkljsafklj")
-		i := service.Run(100, 365, 3)
+    d := time.Duration(365*24*time.Hour)
+		i, _ := service.Run(100, d, 3.0)
 		fmt.Println(i)
 		Expect(i).To(Equal(3.0))
 	})
 
 	It("Calculates the right interest", func () {
-		i := service.Run(100, 10, 3)
+    d := time.Duration(10*24*time.Hour)
+		i, _ := service.Run(100, d, 3.0)
 		Expect(math.Floor(i*1000)).To(Equal(82.0))
 	})
 
