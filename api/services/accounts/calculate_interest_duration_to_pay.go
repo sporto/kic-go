@@ -5,7 +5,10 @@ import (
 	"time"
 )
 
-func CalculateInterestDurationToPay(account models.Account, to time.Time) (days time.Duration) {
+type CalculateInterestDurationToPayServ struct{
+}
+
+func (serv *CalculateInterestDurationToPayServ) Run(account models.Account, to time.Time) (days time.Duration, err error) {
 	zero := *new(time.Time)
 	if account.LastInterestPaid.Equal(zero) {
 		days = 0
