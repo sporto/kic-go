@@ -38,21 +38,27 @@ var _ = Describe("UpdateBalanceServ", func() {
 
 	})
 
-  It("Saves the account", func () {
-    service.Run(dbSession, &account)
-    account2, _ := getServ.Run(dbSession, account.Id)
-    Expect(account2.CurrentBalance).To(Equal(103.5))
-  })
+	It("Saves the account", func () {
+		service.Run(dbSession, &account)
+		account2, _ := getServ.Run(dbSession, account.Id)
+		Expect(account2.CurrentBalance).To(Equal(103.5))
+	})
 
 	It("Updates the current balance", func () {
 		service.Run(dbSession, &account)
 		Expect(account.CurrentBalance).To(Equal(103.5))
 	})
 
-  It("Updates the last interest paid", func () {
-    service.Run(dbSession, &account)
-    Expect(account.LastInterestPaid).To(matchers.BeWithin(time.Now()))
-  })
+	It("Updates the last interest paid", func () {
+		service.Run(dbSession, &account)
+		Expect(account.LastInterestPaid).To(matchers.BeWithin(time.Now()))
+	})
+
+	It("Doesnt update the balance twice", func () {
+		service.Run(dbSession, &account)
+		service.Run(dbSession, &account)
+		Expect(account.CurrentBalance).To(Equal(103.5))
+	})
 
 
 })
