@@ -12,7 +12,7 @@ import (
 type CreateServ struct {
 }
 
-func (serv *CreateServ) Run(dbSession *r.Session, transaction models.Transaction) (id string, err error) {
+func (serv *CreateServ) Run(dbSession *r.Session, transaction *models.Transaction) (id string, err error) {
 	
 	// fail if transaction is already saved
 	if transaction.Id != "" {
@@ -55,8 +55,16 @@ func (serv *CreateServ) Run(dbSession *r.Session, transaction models.Transaction
 
 	id = response.GeneratedKeys[0]
 
+	transaction.Id = id
+
 	// update the current account balance
-	
+	account.CurrentBalance += transaction.Credit
+	account.CurrentBalance -= transaction.Debit
+	updateAccountServ := new(accounts.UpdateServ)
+	err = updateAccountServ.Run(dbSession, account)
+	if err != nil {
+		return
+	}
 
 	return
 }
