@@ -11,11 +11,15 @@ type UpdateServ struct {
 }
 
 func (serv *UpdateServ) Run(dbSession *r.Session, account models.Account) (err error) {
-	//map[string]interface{}
+
+	if account.Id == "" {
+		err = errors.New("Invalid id")
+		return
+	}
 
 	account.UpdatedAt = time.Now()
 
-	response, err := r.Table("accounts").Get(id).Update(account).RunRow(dbSession)
+	_, err = r.Table("accounts").Get(account.Id).Update(account).RunRow(dbSession)
 
 	if err != nil {
 		return

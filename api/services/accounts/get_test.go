@@ -23,7 +23,7 @@ var _ = Describe("GetServ", func() {
 
 	// create an account
 	createAccountServ := *new(accounts.CreateServ)
-	accountId, err = createAccountServ.Run(dbSession, *new(models.Account))
+	accountId, err = createAccountServ.Run(dbSession, &*new(models.Account))
 	if err != nil {
 		fmt.Println("Account not created")
 	}

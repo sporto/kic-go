@@ -10,7 +10,7 @@ import (
 type CreateServ struct {
 }
 
-func (serv *CreateServ) Run(dbSession *r.Session, account models.Account) (id string, err error) {
+func (serv *CreateServ) Run(dbSession *r.Session, account *models.Account) (id string, err error) {
 
 	if account.Id != "" {
 		err = errors.New("Account already has an id")
@@ -25,6 +25,8 @@ func (serv *CreateServ) Run(dbSession *r.Session, account models.Account) (id st
 	}
 	
 	id = response.GeneratedKeys[0]
+
+	account.Id = id
 
 	return
 }
