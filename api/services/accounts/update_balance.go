@@ -3,6 +3,7 @@ package accounts
 import (
 	"github.com/sporto/kic/api/models"
 	r "github.com/dancannon/gorethink"
+  "time"
 )
 
 type UpdateBalanceServ struct {
@@ -18,6 +19,7 @@ func (serv *UpdateBalanceServ) Run(dbSession *r.Session, account *models.Account
 	}
 
 	account.CurrentBalance += interest
+  account.LastInterestPaid = time.Now()
 
 	updateServ := new(UpdateServ)
 	err = updateServ.Run(dbSession, *account)
