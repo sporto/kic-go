@@ -1,14 +1,14 @@
 package api
 
 import (
-	r "github.com/christopherhesse/rethinkgo"
+	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/controllers"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 )
 
 func MapRoutes(sessionArray []*r.Session) {
-  //
+	
 	accounts := &controllers.Accounts{DbSession: sessionArray[0]}
 	goweb.MapController(accounts)
 	

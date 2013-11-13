@@ -1,9 +1,9 @@
 package accounts
 
 import (
+	"errors"
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
-	"errors"
 	"time"
 )
 
@@ -18,12 +18,13 @@ func (serv *CreateServ) Run(dbSession *r.Session, account *models.Account) (id s
 	}
 
 	account.CreatedAt = time.Now()
+	account.UpdatedAt = time.Now()
 
 	response, err := r.Table("accounts").Insert(account).RunWrite(dbSession)
 	if err != nil {
 		return
 	}
-	
+
 	id = response.GeneratedKeys[0]
 
 	account.Id = id

@@ -1,12 +1,12 @@
 package accounts
 
 import (
-  "github.com/sporto/kic/api/models"
-  "github.com/sporto/kic/api/services/misc"
-  "time"
+	"github.com/sporto/kic/api/models"
+	"github.com/sporto/kic/api/services/misc"
+	"time"
 )
 
-type CalculateInterestToPayServ struct{
+type CalculateInterestToPayServ struct {
 }
 
 func (serv *CalculateInterestToPayServ) Run(account models.Account) (interest float64, err error) {

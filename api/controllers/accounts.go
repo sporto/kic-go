@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	r "github.com/christopherhesse/rethinkgo"
+	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
+	"github.com/sporto/kic/api/services/accounts"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 	"log"
@@ -18,21 +19,23 @@ func (c *Accounts) Path() string {
 }
 
 func (c *Accounts) ReadMany(ctx context.Context) error {
-	var records []models.Account
+	var accounts []models.Account
 
-	err := r.Table("accounts").Run(c.DbSession).All(&records)
+	rows, err := r.Table("accounts").OrderBy(r.Asc("CreatedAt")).Run(c.DbSession)
+	rows.Scan(&accounts)
 
 	if err != nil {
 		log.Fatal(err)
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
-	return goweb.API.RespondWithData(ctx, records)
+	return goweb.API.RespondWithData(ctx, accounts)
 }
 
 func (c *Accounts) Read(id string, ctx context.Context) error {
 	var record models.Account
 
-	err := r.Table("accounts").Get(id).Run(c.DbSession).One(&record)
+	getServ := &accounts.GetServ{}
+	account, err := getServ.Run(c.DbSession, id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -43,5 +46,5 @@ func (c *Accounts) Read(id string, ctx context.Context) error {
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
 
-	return goweb.API.RespondWithData(ctx, record)
+	return goweb.API.RespondWithData(ctx, account)
 }

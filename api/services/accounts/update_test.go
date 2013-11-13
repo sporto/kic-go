@@ -1,12 +1,12 @@
 package accounts_test
 
 import (
+	"fmt"
+	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sporto/kic/api/services/accounts"
 	"github.com/sporto/kic/api/models"
-	r "github.com/dancannon/gorethink"
-	"fmt"
+	"github.com/sporto/kic/api/services/accounts"
 )
 
 var _ = Describe("UpdateServ", func() {
@@ -29,13 +29,13 @@ var _ = Describe("UpdateServ", func() {
 		fmt.Println(err)
 	}
 
-	It("Updates the account", func () {
+	It("Updates the account", func() {
 		account.Name = "No name"
 		err := service.Run(dbSession, account)
 		Expect(err).To(BeNil())
 	})
 
-	It("fails if account doesnt have an id", func () {
+	It("fails if account doesnt have an id", func() {
 		account.Id = ""
 		err := service.Run(dbSession, account)
 		Expect(err).NotTo(BeNil())

@@ -1,9 +1,9 @@
 package accounts
 
 import (
-	"github.com/sporto/kic/api/models"
 	r "github.com/dancannon/gorethink"
-  "time"
+	"github.com/sporto/kic/api/models"
+	"time"
 )
 
 type UpdateBalanceServ struct {

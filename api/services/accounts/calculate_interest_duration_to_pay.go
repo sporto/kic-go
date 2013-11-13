@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type CalculateInterestDurationToPayServ struct{
+type CalculateInterestDurationToPayServ struct {
 }
 
 func (serv *CalculateInterestDurationToPayServ) Run(account models.Account, to time.Time) (days time.Duration, err error) {

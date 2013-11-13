@@ -1,18 +1,18 @@
 package accounts_test
 
 import (
+	"fmt"
+	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sporto/kic/api/services/accounts"
 	"github.com/sporto/kic/api/models"
-	r "github.com/dancannon/gorethink"
-	"fmt"
+	"github.com/sporto/kic/api/services/accounts"
 )
 
 var _ = Describe("GetServ", func() {
 
 	var (
-		service accounts.GetServ
+		service   accounts.GetServ
 		accountId string
 	)
 
@@ -28,7 +28,7 @@ var _ = Describe("GetServ", func() {
 		fmt.Println("Account not created")
 	}
 
-	It("Gets the account", func () {
+	It("Gets the account", func() {
 		account, err := service.Run(dbSession, accountId)
 		Expect(err).To(BeNil())
 		Expect(account.Id).To(Equal(accountId))

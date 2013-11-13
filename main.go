@@ -1,7 +1,7 @@
 package main
 
 import (
-	r "github.com/christopherhesse/rethinkgo"
+	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api"
 	"github.com/stretchr/goweb"
 	"log"
@@ -15,36 +15,36 @@ import (
 const (
 	Address string = ":9000"
 )
-//
-//
-//
-//
+
 var sessionArray []*r.Session
 
 func initDb() {
-	session, err := r.Connect("localhost:28015", "kic")
+	dbSession, err := r.Connect(map[string]interface{}{
+		"address":  "localhost:28015",
+		"database": "kic",
+	})
 	if err != nil {
 		log.Fatal(err)
 		log.Println("Most likely RethinkDB is not running")
 		return
 	}
 
-	err = r.DbCreate("kic").Run(session).Exec()
+	_, err = r.DbCreate("kic").Run(dbSession)
 	if err != nil {
 		log.Println(err)
 	}
 
-	err = r.TableCreate("accounts").Run(session).Exec()
+	_, err = r.Db("kic").TableCreate("accounts").Run(dbSession)
 	if err != nil {
 		log.Println(err)
 	}
 
-	err = r.TableCreate("transactions").Run(session).Exec()
+	_, err = r.Db("kic").TableCreate("transactions").Run(dbSession)
 	if err != nil {
 		log.Println(err)
 	}
 
-	sessionArray = append(sessionArray, session)
+	sessionArray = append(sessionArray, dbSession)
 }
 
 func main() {

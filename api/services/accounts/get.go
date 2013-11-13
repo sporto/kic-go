@@ -1,9 +1,9 @@
 package accounts
 
 import (
+	"errors"
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
-	"errors"
 )
 
 type GetServ struct {

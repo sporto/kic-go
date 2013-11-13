@@ -14,7 +14,7 @@ func (serv *UpdateAllBalancesServ) Run(dbSession *r.Session) (err error) {
 
 	// Fetch all the items from the database
 	rows, err := r.Table("accounts").OrderBy(r.Asc("CreatedAt")).Run(dbSession)
-	
+
 	for rows.Next() {
 		var account models.Account
 		err := rows.Scan(&account)

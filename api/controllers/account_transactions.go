@@ -1,14 +1,13 @@
 package controllers
 
 import (
-	r "github.com/christopherhesse/rethinkgo"
+	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/transactions"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 	"log"
 	"net/http"
-	"time"
 )
 
 type AccountTransactions struct {
@@ -21,45 +20,40 @@ func (c *AccountTransactions) Path() string {
 
 func (c *AccountTransactions) ReadMany(ctx context.Context) error {
 
-	// ctx.PathValue("account_id")
+	var transactions []models.Transaction
 
-	var records []models.Transaction
-
-	err := r.Table("transactions").Run(c.DbSession).All(&records)
+	rows, err := r.Table("transactions").OrderBy(r.Asc("CreatedAt")).Run(c.DbSession)
+	rows.Scan(&transactions)
 
 	if err != nil {
 		log.Fatal(err)
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
-	return goweb.API.RespondWithData(ctx, records)
+	return goweb.API.RespondWithData(ctx, transactions)
 }
 
 func (c *AccountTransactions) Create(ctx context.Context) error {
-
 	accountId := ctx.PathValue("account_id")
-
 	data, err := ctx.RequestData()
-
 	if err != nil {
 		return goweb.API.RespondWithError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	dataMap := data.(map[string]interface{})
 
-	t := time.Now()
 	transaction := models.Transaction{
 		AccountId: accountId,
-		CreatedAt: t,
-		Amount:    dataMap["amount"].(float64),
+		Debit:     dataMap["debit"].(float64),
+		Credit:    dataMap["credit"].(float64),
 		Kind:      dataMap["kind"].(string),
 	}
 
-	record, err := transactions.Create(c.DbSession, transaction)
-
+	createServ := &transactions.CreateServ{}
+	_, err = createServ.Run(c.DbSession, &transaction)
 	if err != nil {
 		log.Fatal(err)
 		return goweb.Respond.WithStatus(ctx, http.StatusInternalServerError)
 	}
 
-	return goweb.API.RespondWithData(ctx, record)
+	return goweb.API.RespondWithData(ctx, transaction)
 }

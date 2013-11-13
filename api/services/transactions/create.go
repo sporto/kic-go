@@ -1,10 +1,10 @@
 package transactions
 
 import (
+	"errors"
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
-	"errors"
 	// "fmt"
 	"time"
 )
@@ -13,7 +13,7 @@ type CreateServ struct {
 }
 
 func (serv *CreateServ) Run(dbSession *r.Session, transaction *models.Transaction) (id string, err error) {
-	
+
 	// fail if transaction is already saved
 	if transaction.Id != "" {
 		err = errors.New("Transaction Id must be nil")
@@ -40,12 +40,13 @@ func (serv *CreateServ) Run(dbSession *r.Session, transaction *models.Transactio
 	}
 
 	// check that the transaction is valid e.g. enough balance
-	if (transaction.Debit > account.CurrentBalance) {
+	if transaction.Debit > account.CurrentBalance {
 		err = errors.New("Not enough balance")
 		return
 	}
 
 	transaction.CreatedAt = time.Now()
+	transaction.UpdatedAt = time.Now()
 
 	// save the transaction
 	response, err := r.Table("transactions").Insert(transaction).RunWrite(dbSession)
