@@ -19,7 +19,7 @@ func (serv *UpdateBalanceServ) Run(dbSession *r.Session, account *models.Account
 	}
 
 	account.CurrentBalance += interest
-  account.LastInterestPaid = time.Now()
+	account.LastInterestPaid = time.Now()
 
 	updateServ := new(UpdateServ)
 	err = updateServ.Run(dbSession, *account)
