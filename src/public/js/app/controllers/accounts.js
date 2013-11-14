@@ -20,10 +20,17 @@ angular.module('APP')
 
 	})
 	.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier) {
-		var id = $routeParams.accountId;
+		$scope.id = $routeParams.accountId;
 
-		logger.info('Getting account', id);
-		$scope.account = Account.one(id).get();
+		logger.info('Getting account', $scope.id);
+		Account.one($scope.id).get()
+			.then(function (account) {
+				$scope.account = account;
+			});
+
 		// get the latest transactions
-		// $scope.transactions = Account.one(id).all('transactions').getList();
+		Account.one($scope.id).getList('transactions')
+			.then(function (transactions) {
+				$scope.transactions = transactions;
+			});
 	});

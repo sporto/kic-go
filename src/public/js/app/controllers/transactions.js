@@ -24,11 +24,22 @@ angular.module('APP')
 
 		$scope.submit = function () {
 			$scope.state.busy = true;
+
+			if ($scope.transaction.kind === 'deposit') {
+				$scope.transaction.credit = $scope.transaction.amount;
+				$scope.transaction.debit = 0;
+			} else {
+				$scope.transaction.debit = $scope.transaction.amount;
+				$scope.transaction.credit = 0;
+			}
+
 			$scope.account.post('transactions', $scope.transaction)
 				.then(function () {
 					notifier.success('Saved');
-					$scope.state.busy = false;
 					$location.path('/accounts/' + $scope.account.id);
+				}, function (response) {
+					notifier.error(response.data.e);
+					$scope.state.busy = false;
 				});
 		}
 	})

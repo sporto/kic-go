@@ -18,11 +18,22 @@ func (c *Accounts) Path() string {
 	return "api/accounts"
 }
 
-func (c *Accounts) ReadMany(ctx context.Context) error {
+func (c *Accounts) ReadMany(ctx context.Context) (err error) {
 	var accounts []models.Account
 
 	rows, err := r.Table("accounts").OrderBy(r.Asc("CreatedAt")).Run(c.DbSession)
 	rows.Scan(&accounts)
+
+	for rows.Next() {
+		var account models.Account
+
+		err = rows.Scan(&account)
+		if err != nil {
+			return
+		}
+
+		accounts = append(accounts, account)
+	}
 
 	if err != nil {
 		log.Fatal(err)
@@ -31,8 +42,7 @@ func (c *Accounts) ReadMany(ctx context.Context) error {
 	return goweb.API.RespondWithData(ctx, accounts)
 }
 
-func (c *Accounts) Read(id string, ctx context.Context) error {
-	var record models.Account
+func (c *Accounts) Read(id string, ctx context.Context) (err error) {
 
 	getServ := &accounts.GetServ{}
 	account, err := getServ.Run(c.DbSession, id)
@@ -42,7 +52,7 @@ func (c *Accounts) Read(id string, ctx context.Context) error {
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
 
-	if record.Id == "" {
+	if account.Id == "" {
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
 	}
 

@@ -18,12 +18,22 @@ func (c *AccountTransactions) Path() string {
 	return "api/accounts/{account_id}/transactions"
 }
 
-func (c *AccountTransactions) ReadMany(ctx context.Context) error {
+func (c *AccountTransactions) ReadMany(ctx context.Context) (err error) {
 
 	var transactions []models.Transaction
 
 	rows, err := r.Table("transactions").OrderBy(r.Asc("CreatedAt")).Run(c.DbSession)
-	rows.Scan(&transactions)
+
+	for rows.Next() {
+		var transaction models.Transaction
+
+		err = rows.Scan(&transaction)
+		if err != nil {
+			return
+		}
+
+		transactions = append(transactions, transaction)
+	}
 
 	if err != nil {
 		log.Fatal(err)
@@ -32,9 +42,10 @@ func (c *AccountTransactions) ReadMany(ctx context.Context) error {
 	return goweb.API.RespondWithData(ctx, transactions)
 }
 
-func (c *AccountTransactions) Create(ctx context.Context) error {
+func (c *AccountTransactions) Create(ctx context.Context) (err error) {
 	accountId := ctx.PathValue("account_id")
 	data, err := ctx.RequestData()
+
 	if err != nil {
 		return goweb.API.RespondWithError(ctx, http.StatusInternalServerError, err.Error())
 	}
@@ -51,8 +62,8 @@ func (c *AccountTransactions) Create(ctx context.Context) error {
 	createServ := &transactions.CreateServ{}
 	_, err = createServ.Run(c.DbSession, &transaction)
 	if err != nil {
-		log.Fatal(err)
-		return goweb.Respond.WithStatus(ctx, http.StatusInternalServerError)
+		log.Print(err)
+		return goweb.API.RespondWithError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	return goweb.API.RespondWithData(ctx, transaction)
