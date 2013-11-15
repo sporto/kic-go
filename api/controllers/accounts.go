@@ -4,6 +4,7 @@ import (
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
+	"github.com/sporto/kic/api/services/account_balances"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 	"log"
@@ -54,6 +55,24 @@ func (c *Accounts) Read(id string, ctx context.Context) (err error) {
 
 	if account.Id == "" {
 		return goweb.Respond.WithStatus(ctx, http.StatusNotFound)
+	}
+
+	return goweb.API.RespondWithData(ctx, account)
+}
+
+func (c *Accounts) Adjust(ctx context.Context) (err error) {
+	id := ctx.PathParams().Get("id").Str()
+
+	getServ := &accounts.GetServ{}
+	account, err := getServ.Run(c.DbSession, id)
+	if err != nil {
+		return goweb.API.RespondWithError(ctx, http.StatusNotFound, err.Error())
+	}
+
+	adjustServ := &account_balances.AdjustServ{}
+	account, _, err = adjustServ.Run(c.DbSession, account)
+	if err != nil {
+		return goweb.API.RespondWithError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	return goweb.API.RespondWithData(ctx, account)

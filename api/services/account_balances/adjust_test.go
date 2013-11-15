@@ -12,10 +12,10 @@ import (
 	"time"
 )
 
-var _ = Describe("UpdateServ", func() {
+var _ = Describe("AdjustServ", func() {
 
 	var (
-		service    account_balances.UpdateServ
+		service    account_balances.AdjustServ
 		createServ accounts.CreateServ
 		// getServ    accounts.GetServ
 		account    models.Account

@@ -21,16 +21,41 @@ angular.module('APP')
 	})
 	.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier) {
 		$scope.id = $routeParams.accountId;
+		$scope.state = {
+			busy: false
+		}
 
-		logger.info('Getting account', $scope.id);
-		Account.one($scope.id).get()
-			.then(function (account) {
-				$scope.account = account;
-			});
+		getAccount();
+		getTransactions();
 
-		// get the latest transactions
-		Account.one($scope.id).getList('transactions')
-			.then(function (transactions) {
-				$scope.transactions = transactions;
-			});
+		$scope.refreshInterest = refreshInterest;
+
+		function getAccount() {
+			logger.info('Getting account', $scope.id);
+			Account.one($scope.id).get()
+				.then(function (account) {
+					$scope.account = account;
+				});
+		}
+
+		function getTransactions() {
+			// get the latest transactions
+			Account.one($scope.id).getList('transactions')
+				.then(function (transactions) {
+					$scope.transactions = transactions;
+				});
+		}
+
+		function refreshInterest() {
+			$scope.state.busy = true;
+			Account.one($scope.id).customPOST({}, 'adjust')
+				.then(function () {
+					$scope.state.busy = false;
+					getTransactions();
+				}, function (response) {
+					$scope.state.busy = false;
+					notifier.error(response.data.e);
+				})
+		}
+
 	});

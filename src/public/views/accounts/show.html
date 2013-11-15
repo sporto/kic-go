@@ -26,12 +26,17 @@
 	</table>
 </div>
 
-<div class="row">
+<div ng-show="state.busy">
+	Busy
+</div>
+
+<div class="row" ng-hide="state.busy">
+	<a class="btn" ng-click="refreshInterest()">Refresh Interest</a>
 	<a class="btn" ng-href="#accounts/{{id}}/transactions/new?kind=deposit">New Deposit</a>
 	<a class="btn" ng-href="#accounts/{{id}}/transactions/new?kind=withdrawal">New Withdrawal</a>
 </div>
 
-<div class="row">
+<div class="row" ng-hide="state.busy">
 	<h2>Transactions</h2>
 	<table class="table">
 		<thead>

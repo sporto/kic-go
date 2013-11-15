@@ -5,16 +5,19 @@ import (
 	"github.com/sporto/kic/api/controllers"
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
+	gowebhttp "github.com/stretchr/goweb/http"
+
 )
 
 func MapRoutes(sessionArray []*r.Session) {
-	
+
 	accounts := &controllers.Accounts{DbSession: sessionArray[0]}
 	goweb.MapController(accounts)
-	
+	goweb.Map(gowebhttp.MethodPost, "/api/accounts/{id}/adjust", accounts.Adjust)
+
 	accountTransactions := &controllers.AccountTransactions{DbSession: sessionArray[0]}
 	goweb.MapController(accountTransactions)
-	
+
 	goweb.MapStatic("/public", "src/public")
 	goweb.MapStaticFile("/", "src/index.html")
 	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")

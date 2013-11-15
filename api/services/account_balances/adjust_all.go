@@ -6,11 +6,11 @@ import (
 	"github.com/sporto/kic/api/models"
 )
 
-type UpdateAllServ struct {
-	updateBalanceServ UpdateServ
+type AdjustAllServ struct {
+	adjustBalanceServ AdjustServ
 }
 
-func (serv *UpdateAllServ) Run(dbSession *r.Session) (err error) {
+func (serv *AdjustAllServ) Run(dbSession *r.Session) (err error) {
 
 	// Fetch all the items from the database
 	rows, err := r.Table("accounts").OrderBy(r.Asc("CreatedAt")).Run(dbSession)
@@ -22,7 +22,7 @@ func (serv *UpdateAllServ) Run(dbSession *r.Session) (err error) {
 			fmt.Println("err", err)
 			break
 		}
-		_, _, err = serv.updateBalanceServ.Run(dbSession, account)
+		_, _, err = serv.adjustBalanceServ.Run(dbSession, account)
 		if err != nil {
 			fmt.Println("err", err)
 			break
