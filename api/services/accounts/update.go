@@ -10,20 +10,21 @@ import (
 type UpdateServ struct {
 }
 
-func (serv *UpdateServ) Run(dbSession *r.Session, account models.Account) (err error) {
+func (serv *UpdateServ) Run(dbSession *r.Session, accountIn models.Account) (accountOut models.Account, err error) {
 
-	if account.Id == "" {
+	if accountIn.Id == "" {
 		err = errors.New("Invalid id")
 		return
 	}
 
-	account.UpdatedAt = time.Now()
+	accountIn.UpdatedAt = time.Now()
 
-	_, err = r.Table("accounts").Get(account.Id).Update(account).RunRow(dbSession)
-
+	_, err = r.Table("accounts").Get(accountIn.Id).Update(accountIn).RunRow(dbSession)
 	if err != nil {
 		return
 	}
+
+	accountOut, err = new(GetServ).Run(dbSession, accountIn.Id)
 
 	return
 }

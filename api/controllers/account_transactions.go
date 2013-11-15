@@ -60,11 +60,11 @@ func (c *AccountTransactions) Create(ctx context.Context) (err error) {
 	}
 
 	createServ := &transactions.CreateServ{}
-	_, err = createServ.Run(c.DbSession, &transaction)
+	transactionOut, err := createServ.Run(c.DbSession, transaction)
 	if err != nil {
 		log.Print(err)
 		return goweb.API.RespondWithError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
-	return goweb.API.RespondWithData(ctx, transaction)
+	return goweb.API.RespondWithData(ctx, transactionOut)
 }

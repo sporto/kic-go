@@ -12,57 +12,61 @@ import (
 type CreateServ struct {
 }
 
-func (serv *CreateServ) Run(dbSession *r.Session, transaction *models.Transaction) (id string, err error) {
+func (serv *CreateServ) Run(dbSession *r.Session, transactionIn models.Transaction) (transactionOut models.Transaction, err error) {
 
 	// fail if transaction is already saved
-	if transaction.Id != "" {
+	if transactionIn.Id != "" {
 		err = errors.New("Transaction Id must be nil")
 		return
 	}
 
 	// fail if not account id provided
-	if transaction.AccountId == "" {
+	if transactionIn.AccountId == "" {
 		err = errors.New("Account Id cannot be nil")
 		return
 	}
 
 	// fail if no credit or debit provided
-	if transaction.Credit <= 0 && transaction.Debit <= 0 {
+	if transactionIn.Credit <= 0 && transactionIn.Debit <= 0 {
 		err = errors.New("Credit or Debit must be provided")
 		return
 	}
 
 	// check that the account exist
 	getServ := new(accounts.GetServ)
-	account, err := getServ.Run(dbSession, transaction.AccountId)
+	account, err := getServ.Run(dbSession, transactionIn.AccountId)
 	if err != nil {
 		return
 	}
 
 	// check that the transaction is valid e.g. enough balance
-	if transaction.Debit > account.CurrentBalance {
+	if transactionIn.Debit > account.CurrentBalance {
 		err = errors.New("Not enough balance")
 		return
 	}
 
-	transaction.CreatedAt = time.Now()
-	transaction.UpdatedAt = time.Now()
+	transactionIn.CreatedAt = time.Now()
+	transactionIn.UpdatedAt = time.Now()
 
 	// save the transaction
-	response, err := r.Table("transactions").Insert(transaction).RunWrite(dbSession)
+	response, err := r.Table("transactions").Insert(transactionIn).RunWrite(dbSession)
 	if err != nil {
 		return
 	}
 
-	id = response.GeneratedKeys[0]
+	id := response.GeneratedKeys[0]
 
-	transaction.Id = id
+	// get the transaction out
+	transactionOut, err = new(GetServ).Run(dbSession, id)
+	if err != nil {
+		return
+	}
 
 	// update the current account balance
-	account.CurrentBalance += transaction.Credit
-	account.CurrentBalance -= transaction.Debit
+	account.CurrentBalance += transactionIn.Credit
+	account.CurrentBalance -= transactionIn.Debit
 	updateAccountServ := new(accounts.UpdateServ)
-	err = updateAccountServ.Run(dbSession, account)
+	_, err = updateAccountServ.Run(dbSession, account)
 	if err != nil {
 		return
 	}

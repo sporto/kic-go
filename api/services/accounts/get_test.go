@@ -14,24 +14,32 @@ var _ = Describe("GetServ", func() {
 	var (
 		service   accounts.GetServ
 		accountId string
+		createAccountServ accounts.CreateServ
 	)
 
-	dbSession, err := r.Connect(map[string]interface{}{
+	dbSession, _ := r.Connect(map[string]interface{}{
 		"address":  "localhost:28015",
 		"database": "kic_test",
 	})
 
-	// create an account
-	createAccountServ := *new(accounts.CreateServ)
-	accountId, err = createAccountServ.Run(dbSession, &*new(models.Account))
-	if err != nil {
-		fmt.Println("Account not created")
-	}
+	BeforeEach(func () {
+		accountIn := new(models.Account)
+		accountIn.Name = "X"
+		accountOut, err := createAccountServ.Run(dbSession, *accountIn)
+		if err != nil {
+			fmt.Println("Account not created")
+		}
+		accountId = accountOut.Id
+	})
+
+	It("Saved the account", func () {
+		Expect(accountId).NotTo(BeEmpty())
+	})
 
 	It("Gets the account", func() {
 		account, err := service.Run(dbSession, accountId)
 		Expect(err).To(BeNil())
-		Expect(account.Id).To(Equal(accountId))
+		Expect(account.Name).To(Equal("X"))
 	})
 
 })

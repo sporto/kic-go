@@ -10,24 +10,24 @@ import (
 type CreateServ struct {
 }
 
-func (serv *CreateServ) Run(dbSession *r.Session, account *models.Account) (id string, err error) {
+func (serv *CreateServ) Run(dbSession *r.Session, accountIn models.Account) (accountOut models.Account, err error) {
 
-	if account.Id != "" {
+	if accountIn.Id != "" {
 		err = errors.New("Account already has an id")
 		return
 	}
 
-	account.CreatedAt = time.Now()
-	account.UpdatedAt = time.Now()
+	accountIn.CreatedAt = time.Now()
+	accountIn.UpdatedAt = time.Now()
 
-	response, err := r.Table("accounts").Insert(account).RunWrite(dbSession)
+	response, err := r.Table("accounts").Insert(accountIn).RunWrite(dbSession)
 	if err != nil {
 		return
 	}
 
-	id = response.GeneratedKeys[0]
+	id := response.GeneratedKeys[0]
 
-	account.Id = id
+	accountOut, err = new(GetServ).Run(dbSession, id)
 
 	return
 }

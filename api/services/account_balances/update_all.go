@@ -1,4 +1,4 @@
-package accounts
+package account_balances
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"github.com/sporto/kic/api/models"
 )
 
-type UpdateAllBalancesServ struct {
-	updateBalanceServ UpdateBalanceServ
+type UpdateAllServ struct {
+	updateBalanceServ UpdateServ
 }
 
-func (serv *UpdateAllBalancesServ) Run(dbSession *r.Session) (err error) {
+func (serv *UpdateAllServ) Run(dbSession *r.Session) (err error) {
 
 	// Fetch all the items from the database
 	rows, err := r.Table("accounts").OrderBy(r.Asc("CreatedAt")).Run(dbSession)
@@ -22,7 +22,7 @@ func (serv *UpdateAllBalancesServ) Run(dbSession *r.Session) (err error) {
 			fmt.Println("err", err)
 			break
 		}
-		err = serv.updateBalanceServ.Run(dbSession, &account)
+		_, _, err = serv.updateBalanceServ.Run(dbSession, account)
 		if err != nil {
 			fmt.Println("err", err)
 			break

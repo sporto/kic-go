@@ -21,22 +21,15 @@ var _ = Describe("CreateServ", func() {
 	})
 
 	It("Saves the account", func() {
-		account := models.Account{Name: "Sam"}
-		id, err := service.Run(dbSession, &account)
+		accountIn := &models.Account{Name: "Sam"}
+		accountOut, err := service.Run(dbSession, *accountIn)
 		Expect(err).To(BeNil())
-		Expect(id).NotTo(BeEmpty())
-	})
-
-	It("Adds the created id to the given account", func() {
-		account := models.Account{Name: "Sam"}
-		_, err := service.Run(dbSession, &account)
-		Expect(err).To(BeNil())
-		Expect(account.Id).NotTo(BeEmpty())
+		Expect(accountOut.Id).NotTo(BeEmpty())
 	})
 
 	It("fails if the account is already saved", func() {
-		account := models.Account{Id: "aaaaa"}
-		_, err = service.Run(dbSession, &account)
+		account := &models.Account{Id: "aaaaa"}
+		_, err = service.Run(dbSession, *account)
 		Expect(err).NotTo(BeNil())
 	})
 
