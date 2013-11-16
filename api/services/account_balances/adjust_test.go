@@ -17,7 +17,6 @@ var _ = Describe("AdjustServ", func() {
 	var (
 		service    account_balances.AdjustServ
 		createServ accounts.CreateServ
-		// getServ    accounts.GetServ
 		account    models.Account
 	)
 
@@ -38,33 +37,40 @@ var _ = Describe("AdjustServ", func() {
 		}
 	})
 
-	It("Saved the test account", func () {
+	It("saved the test account", func () {
 		Expect(account.Id).NotTo(BeEmpty())
 	})
 
-	It("Returns the account", func() {
+	It("returns the account", func() {
 		accountOut, _, err := service.Run(dbSession, account)
 		Expect(err).To(BeNil())
 		Expect(accountOut.Id).NotTo(BeEmpty())
 	})
 
-	It("Updates the current balance", func() {
+	It("does nothing if duration is less than one day", func () {
+		account.LastInterestPaid = time.Now().Add(-time.Duration(time.Hour * 10))
+		accountOut, transaction, _ := service.Run(dbSession, account)
+		Expect(accountOut.CurrentBalance).To(Equal(100.0))
+		Expect(transaction.Id).To(BeEmpty())
+	})
+
+	It("updates the current balance", func() {
 		accountOut, _, _ := service.Run(dbSession, account)
 		Expect(accountOut.CurrentBalance).To(Equal(103.5))
 	})
 
-	It("Updates the last interest paid", func() {
+	It("updates the last interest paid", func() {
 		accountOut, _, _ := service.Run(dbSession, account)
 		Expect(accountOut.LastInterestPaid).To(matchers.BeWithin(time.Now()))
 	})
 
-	It("Doesnt update the balance twice", func() {
+	It("doesnt update the balance twice", func() {
 		accountOut, _, _ := service.Run(dbSession, account)
 		accountOut, _, _ = service.Run(dbSession, account)
 		Expect(accountOut.CurrentBalance).To(Equal(103.5))
 	})
 
-	It("Creates a transaction", func () {
+	It("creates a transaction", func () {
 		_, transaction, _ := service.Run(dbSession, account)
 		Expect(transaction.Credit).To(Equal(3.5))
 		Expect(transaction.Id).NotTo(BeEmpty())
