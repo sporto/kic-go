@@ -5,14 +5,13 @@ import (
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
-	// "fmt"
 	"time"
 )
 
 const (
-	KIND_DEPOSIT = "deposit"
-	KIND_WITHDRAWAL = "withdrawal"
-	KIND_INTEREST = "interest"
+	KindDeposit    = "deposit"
+	KindWithdrawal = "withdrawal"
+	KindInterest   = "interest"
 )
 
 type CreateServ struct {
@@ -51,12 +50,14 @@ func (serv *CreateServ) Run(dbSession *r.Session, transactionIn models.Transacti
 		return
 	}
 
-	// check that interest has been paid
+	// check that interest has been p   aid
 	// unless kind is interest
-	if transactionIn.Kind != KIND_INTEREST {
+	if transactionIn.Kind != KindInterest   {
+
 		dur := time.Now().Sub(account.LastInterestPaid)
-		if dur > 36 * time.Hour {
+		if dur.Hours() > 24  {
 			err = errors.New("Interest not updated")
+			return
 		}
 	}
 
