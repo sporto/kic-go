@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+const (
+	KIND_DEPOSIT = "deposit"
+	KIND_WITHDRAWAL = "withdrawal"
+	KIND_INTEREST = "interest"
+)
+
 type CreateServ struct {
 }
 
@@ -43,6 +49,15 @@ func (serv *CreateServ) Run(dbSession *r.Session, transactionIn models.Transacti
 	if transactionIn.Debit > account.CurrentBalance {
 		err = errors.New("Not enough balance")
 		return
+	}
+
+	// check that interest has been paid
+	// unless kind is interest
+	if transactionIn.Kind != KIND_INTEREST {
+		dur := time.Now().Sub(account.LastInterestPaid)
+		if dur > 36 * time.Hour {
+			err = errors.New("Interest not updated")
+		}
 	}
 
 	transactionIn.CreatedAt = time.Now()
