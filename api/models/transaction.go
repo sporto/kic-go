@@ -12,4 +12,5 @@ type Transaction struct {
 	AccountId        string       `json:"accountId"gorethink:"accountId"`
 	Debit            float64      `json:"debit"gorethink:"debit"`
 	Credit           float64      `json:"credit"gorethink:"credit"`
+	Balance          float64      `json:"balance"gorethink:"balance"`
 }

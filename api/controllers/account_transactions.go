@@ -22,7 +22,7 @@ func (c *AccountTransactions) ReadMany(ctx context.Context) (err error) {
 
 	var transactions []models.Transaction
 
-	rows, err := r.Table("transactions").OrderBy(r.Asc("CreatedAt")).Run(c.DbSession)
+	rows, err := r.Table("transactions").OrderBy(r.Desc("createdAt")).Run(c.DbSession)
 
 	for rows.Next() {
 		var transaction models.Transaction

@@ -39,22 +39,27 @@ var _ = Describe("CreateServ", func() {
 
 	///////////////////////////////////////////////////////////
 
-	It("Saves the account", func () {
+	It("saves the account", func () {
 		Expect(account.Id).NotTo(BeEmpty())
 	})
 
-	It("Saves the transaction", func() {
+	It("saves the transaction", func() {
 		transaction, err := service.Run(dbSession, *transaction)
 		Expect(err).To(BeNil())
 		Expect(transaction.Id).NotTo(BeEmpty())
 	})
 
-	It("Updates the account balance", func() {
+	It("updates the account balance", func() {
 		_, err = service.Run(dbSession, *transaction)
 		Expect(err).To(BeNil())
 		getAccountServ := new(accounts.GetServ)
 		account, err = getAccountServ.Run(dbSession, account.Id)
 		Expect(account.CurrentBalance).To(Equal(150.0))
+	})
+
+	It("has the current balance", func () {
+		transaction, _ := service.Run(dbSession, *transaction)
+		Expect(transaction.Balance).To(Equal(150.0))
 	})
 
 	It("fails when no account id provided", func() {

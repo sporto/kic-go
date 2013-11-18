@@ -61,8 +61,16 @@ func (serv *CreateServ) Run(dbSession *r.Session, transactionIn models.Transacti
 		}
 	}
 
+
 	transactionIn.CreatedAt = time.Now()
 	transactionIn.UpdatedAt = time.Now()
+
+	// update the current account balance
+	account.CurrentBalance += transactionIn.Credit
+	account.CurrentBalance -= transactionIn.Debit
+
+	// also update the balance in the transaction
+	transactionIn.Balance = account.CurrentBalance
 
 	// save the transaction
 	response, err := r.Table("transactions").Insert(transactionIn).RunWrite(dbSession)
@@ -78,9 +86,6 @@ func (serv *CreateServ) Run(dbSession *r.Session, transactionIn models.Transacti
 		return
 	}
 
-	// update the current account balance
-	account.CurrentBalance += transactionIn.Credit
-	account.CurrentBalance -= transactionIn.Debit
 	updateAccountServ := new(accounts.UpdateServ)
 	_, err = updateAccountServ.Run(dbSession, account)
 	if err != nil {
