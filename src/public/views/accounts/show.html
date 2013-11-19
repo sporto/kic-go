@@ -16,11 +16,11 @@
 			</tr>
 			<tr>
 				<th>Last Interest Paid</th>
-				<td>{{account.lastInterestPaid}}</td>
+				<td>{{account.lastInterestPaid | date:'yyyy-MM-dd'}}</td>
 			</tr>
 			<tr>
 				<th>Current Balance</th>
-				<td>{{account.currentBalance}}</td>
+				<td>{{account.currentBalance | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -31,9 +31,15 @@
 </div>
 
 <div class="row" ng-hide="state.busy">
-	<a class="btn" ng-click="refreshInterest()">Refresh Interest</a>
-	<a class="btn" ng-href="#accounts/{{id}}/transactions/new?kind=deposit">New Deposit</a>
-	<a class="btn" ng-href="#accounts/{{id}}/transactions/new?kind=withdrawal">New Withdrawal</a>
+	<a class="btn btn-default" ng-click="refreshInterest()">Refresh Interest</a>
+	<a class="btn btn-default" ng-href="#accounts/{{id}}/transactions/new?kind=deposit">New Deposit</a>
+	<a class="btn btn-default" ng-href="#accounts/{{id}}/transactions/new?kind=withdrawal">New Withdrawal</a>
+</div>
+
+<br />
+
+<div class="row well">
+	<canvas id="chart" width="800" height="200"></canvas>
 </div>
 
 <div class="row" ng-hide="state.busy">
@@ -52,9 +58,9 @@
 			<tr ng-repeat="transaction in transactions">
 				<td>{{transaction.createdAt | date:'yyyy-MM-dd'}}</td>
 				<td>{{transaction.kind}}</td>
-				<td>{{transaction.credit}}</td>
-				<td>{{transaction.debit}}</td>
-				<td>{{transaction.balance}}</td>
+				<td>{{transaction.credit | number:2}}</td>
+				<td>{{transaction.debit | number:2}}</td>
+				<td>{{transaction.balance | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>

@@ -43,6 +43,7 @@ angular.module('APP')
 			Account.one($scope.id).getList('transactions')
 				.then(function (transactions) {
 					$scope.transactions = transactions;
+					drawChart();
 				});
 		}
 
@@ -56,6 +57,34 @@ angular.module('APP')
 					$scope.state.busy = false;
 					notifier.error(response.data.e);
 				})
+		}
+
+		function drawChart() {
+			var records = $scope.transactions.slice(0).reverse();
+			
+			var labels = _.chain(records)
+				.pluck('createdAt')
+				.map(function (d) {
+					return moment(d).format("YYYY-MM-DD");
+				})
+				.value();
+
+			var values = _.pluck(records, 'balance');
+
+			var data = {
+				labels : labels,
+				datasets : [
+					{
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						data : values
+					}
+				]
+			}
+			var ctx = document.getElementById("chart").getContext("2d");
+			var myNewChart = new Chart(ctx).Line(data);
 		}
 
 	});
