@@ -1,3 +1,7 @@
 .something {
   text-align: center;
 }
+.something .x {
+  color: white;
+  text-decoration: underline;
+}

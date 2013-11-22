@@ -12,6 +12,10 @@ module.exports = function(grunt) {
 				options: {
 					nospawn: true,
 				}
+			},
+			less: {
+				files: ['**/*.less'],
+				tasks: ['less:dev']
 			}
 		},
 
@@ -20,6 +24,26 @@ module.exports = function(grunt) {
 				srcPath: '/Users/Sebastian/GoDev/src/github.com/sporto/kic',
 				srcFile: 'main',
 				binPath: '/Users/Sebastian/GoDev/bin'
+			}
+		},
+
+		less: {
+			dev: {
+				options: {
+					// paths: ["assets/css"]
+				},
+				files: {
+					"src/public/css/app/main.css": "src/public/css/app/main.less"
+				}
+			},
+			dist: {
+				options: {
+					// paths: ["assets/css"],
+					cleancss: true
+				},
+				files: {
+					"dist/public/css/app/main.min.css": "src/public/css/app/*.less"
+				}
 			}
 		},
 
@@ -47,15 +71,12 @@ module.exports = function(grunt) {
 		},
 
 		// minify CSS
+		// only lib files
+		// app files are using less
 		cssmin: {
 			distLib: {
 				files: {
 					'dist/public/css/lib/lib.min.css': ['src/public/css/lib/*.css']
-				}
-			},
-			distApp: {
-				files: {
-					'dist/public/css/app/app.min.css': ['src/public/css/app/*.css']
 				}
 			}
 		},
@@ -81,18 +102,21 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-goserver');
 
 	// custom tasks
-	grunt.registerTask('start', function() {
+	grunt.registerTask('dev', function() {
 		grunt.task.run('goserver');
 		grunt.task.run('watch');
 	});
 
 	// tasks aliases
-	grunt.registerTask('default', 'start');
+	grunt.registerTask('default', 'dev');
+
 	grunt.registerTask('jsmin', 'uglify');
 	grunt.registerTask('lint', 'jshint');
-	grunt.registerTask('build', ['lint', 'concat', 'jsmin', 'cssmin']);
+	
+	grunt.registerTask('dist', ['lint', 'concat', 'jsmin', 'cssmin', 'less:dist']);
 
 };
