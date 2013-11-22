@@ -4,3 +4,4 @@ dist
 .sass-cache
 *.sublime-workspace
 .env
+/tmp

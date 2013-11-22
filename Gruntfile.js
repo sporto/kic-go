@@ -62,11 +62,18 @@ module.exports = function(grunt) {
 					'src/public/js/app/controllers/*.js',
 					'src/public/js/app/services/*.js'
 				],
-				dest: 'dist/public/js/app.js',
+				dest: 'tmp/public/js/app.concat.js',
 			},
 			distJSLib: {
 				src: ['src/public/js/lib/*.js'],
-				dest: 'dist/public/js/lib.js'
+				dest: 'tmp/public/js/lib.concat.js'
+			}
+		},
+
+		ngmin: {
+			all: {
+				src: ['tmp/public/js/app.concat.js'],
+				dest: 'tmp/public/js/app.ngmin.js'
 			}
 		},
 
@@ -85,11 +92,11 @@ module.exports = function(grunt) {
 		uglify: {
 			dist: {
 				files: [{
-					src: 'dist/public/js/app.js',
-					dest: 'dist/public/js/app.min.js'
+					src: 'tmp/public/js/app.ngmin.js',
+					dest: 'dist/public/js/app.js'
 				}, {
-					src: 'dist/public/js/lib.js',
-					dest: 'dist/public/js/lib.min.js'
+					src: 'tmp/public/js/lib.concat.js',
+					dest: 'dist/public/js/lib.js'
 				}]
 			}
 		}
@@ -103,6 +110,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-ngmin');
 	grunt.loadNpmTasks('grunt-goserver');
 
 	// custom tasks
@@ -116,7 +124,8 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('jsmin', 'uglify');
 	grunt.registerTask('lint', 'jshint');
-	
-	grunt.registerTask('dist', ['lint', 'concat', 'jsmin', 'cssmin', 'less:dist']);
+
+	// TODO need to concat, then ngmin then minify
+	grunt.registerTask('dist', ['lint', 'concat', 'ngmin', 'jsmin', 'cssmin', 'less:dist']);
 
 };

@@ -1,30 +1,31 @@
 {
-	"name": "KIC",
-	"version": "0.0.0",
-	"description": "Kids Investment Company",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/sporto/kic.git"
-	},
-	"author": "Sebastian Porto",
-	"license": "MIT",
-	"readmeFilename": "readme.md",
-	"gitHead": "c8c7b164dc87bc58dd2b77cdfe6236f8b24a75e5",
-	"bugs": {
-		"url": "https://github.com/sporto/kic/issues"
-	},
-	"devDependencies": {
-		"grunt-contrib-watch": "~0.5.3",
-		"grunt-goserver": "~0.2.0",
-		"grunt": "~0.4.1",
-		"grunt-contrib-jshint": "~0.7.2",
-		"grunt-contrib-concat": "~0.3.0",
-		"grunt-contrib-uglify": "~0.2.7",
-		"grunt-contrib-cssmin": "~0.7.0",
-		"grunt-contrib-less": "~0.8.2"
-	}
+  "name": "KIC",
+  "version": "0.0.0",
+  "description": "Kids Investment Company",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sporto/kic.git"
+  },
+  "author": "Sebastian Porto",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "gitHead": "c8c7b164dc87bc58dd2b77cdfe6236f8b24a75e5",
+  "bugs": {
+    "url": "https://github.com/sporto/kic/issues"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-goserver": "~0.2.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.7.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-less": "~0.8.2",
+    "grunt-ngmin": "0.0.3"
+  }
 }
