@@ -2,27 +2,28 @@ package accounts_test
 
 import (
 	"fmt"
-	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
+	"log"
 )
 
 var _ = Describe("GetServ", func() {
 
 	var (
-		service   accounts.GetServ
-		accountId string
+		service           accounts.GetServ
+		accountId         string
 		createAccountServ accounts.CreateServ
 	)
 
-	dbSession, _ := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic_test",
-	})
+	dbSession, err := api.GetDbSession("../../../")
+	if err != nil {
+		log.Fatal("Cannot connect to DB")
+	}
 
-	BeforeEach(func () {
+	BeforeEach(func() {
 		accountIn := new(models.Account)
 		accountIn.Name = "X"
 		accountOut, err := createAccountServ.Run(dbSession, *accountIn)
@@ -32,7 +33,7 @@ var _ = Describe("GetServ", func() {
 		accountId = accountOut.Id
 	})
 
-	It("Saved the account", func () {
+	It("Saved the account", func() {
 		Expect(accountId).NotTo(BeEmpty())
 	})
 

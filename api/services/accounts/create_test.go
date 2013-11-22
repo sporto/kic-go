@@ -1,11 +1,12 @@
 package accounts_test
 
 import (
-	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
+	"log"
 	// "fmt"
 )
 
@@ -15,10 +16,10 @@ var _ = Describe("CreateServ", func() {
 		service accounts.CreateServ
 	)
 
-	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic_test",
-	})
+	dbSession, err := api.GetDbSession("../../../")
+	if err != nil {
+		log.Fatal("Cannot connect to DB")
+	}
 
 	It("Saves the account", func() {
 		accountIn := &models.Account{Name: "Sam"}

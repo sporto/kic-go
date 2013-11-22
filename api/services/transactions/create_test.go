@@ -2,13 +2,15 @@ package transactions_test
 
 import (
 	"fmt"
-	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
 	"github.com/sporto/kic/api/services/transactions"
 	"time"
+	// "os"
+	"log"
 )
 
 var _ = Describe("CreateServ", func() {
@@ -21,11 +23,10 @@ var _ = Describe("CreateServ", func() {
 		transaction       *models.Transaction
 	)
 
-	// global setup
-	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic_test",
-	})
+	dbSession, err := api.GetDbSession("../../../")
+	if err != nil {
+		log.Fatal("Cannot connect to DB")
+	}
 
 	BeforeEach(func() {
 		accountIn := *&models.Account{CurrentBalance: 100, LastInterestPaid: time.Now() }

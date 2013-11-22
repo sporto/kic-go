@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/goweb"
 	"github.com/stretchr/goweb/context"
 	gowebhttp "github.com/stretchr/goweb/http"
-
 )
 
 func MapRoutes(sessionArray []*r.Session) {

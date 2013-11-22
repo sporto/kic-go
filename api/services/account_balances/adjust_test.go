@@ -2,9 +2,10 @@ package account_balances_test
 
 import (
 	"fmt"
-	r "github.com/dancannon/gorethink"
+	"log"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/lib/matchers"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
@@ -20,10 +21,10 @@ var _ = Describe("AdjustServ", func() {
 		account    models.Account
 	)
 
-	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic_test",
-	})
+	dbSession, err := api.GetDbSession("../../../")
+	if err != nil {
+		log.Fatal("Cannot connect to DB")
+	}
 
 	BeforeEach(func() {
 		// create an empty accountIn for testing

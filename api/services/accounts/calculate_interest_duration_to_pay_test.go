@@ -3,6 +3,7 @@ package accounts_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
 	"time"

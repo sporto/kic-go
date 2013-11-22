@@ -4,6 +4,7 @@ import (
 	r "github.com/dancannon/gorethink"
 	"github.com/sporto/kic/api"
 	"github.com/stretchr/goweb"
+	"github.com/joho/godotenv"
 	"log"
 	"net"
 	"net/http"
@@ -20,8 +21,8 @@ var sessionArray []*r.Session
 
 func initDb() {
 	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic",
+		"address":  os.Getenv("DB_HOST"),
+		"database": os.Getenv("DB_NAME"),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -48,6 +49,11 @@ func initDb() {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	initDb()
 	api.MapRoutes(sessionArray)
 

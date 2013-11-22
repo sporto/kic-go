@@ -2,11 +2,12 @@ package accounts_test
 
 import (
 	"fmt"
-	r "github.com/dancannon/gorethink"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
+	"log"
 )
 
 var _ = Describe("UpdateServ", func() {
@@ -14,15 +15,15 @@ var _ = Describe("UpdateServ", func() {
 	var (
 		service    accounts.UpdateServ
 		createServ accounts.CreateServ
-		account  models.Account
+		account    models.Account
 	)
 
-	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  "localhost:28015",
-		"database": "kic_test",
-	})
+	dbSession, err := api.GetDbSession("../../../")
+	if err != nil {
+		log.Fatal("Cannot connect to DB")
+	}
 
-	BeforeEach(func () {
+	BeforeEach(func() {
 		// create an account for testing
 		accountIn := &models.Account{}
 		account, err = createServ.Run(dbSession, *accountIn)
@@ -33,7 +34,7 @@ var _ = Describe("UpdateServ", func() {
 		// fmt.Println("Account saved", accountIn.Id)
 	})
 
-	It("Saved the account", func () {
+	It("Saved the account", func() {
 		Expect(account.Id).NotTo(BeEmpty())
 	})
 

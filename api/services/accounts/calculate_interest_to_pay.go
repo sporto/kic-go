@@ -3,8 +3,8 @@ package accounts
 import (
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/misc"
-	"time"
 	"log"
+	"time"
 )
 
 type CalculateInterestToPayServ struct {
