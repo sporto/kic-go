@@ -12,16 +12,27 @@ func GetDbSession(path string) (dbSession *r.Session, err error) {
 	// load env
 	err = godotenv.Load(path + ".env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 
-	log.Println("DB Host", os.Getenv("TEST_DB_HOST"))
-	log.Println("DB Name", os.Getenv("TEST_DB_NAME"))
+	dbAddress := ""
+	dbName := ""
+
+	// log.Println("DB Host", os.Getenv("TEST_DB_HOST"))
+	// log.Println("DB Name", os.Getenv("TEST_DB_NAME"))
+
+	if os.Getenv("WERCKER") == "true" {
+		dbAddress = os.Getenv("WERCKER_RETHINKDB_URL")
+		dbName = os.Getenv("kic_test")
+	} else {
+		dbAddress = os.Getenv("TEST_DB_HOST")
+		dbName = os.Getenv("TEST_DB_NAME")
+	}
 
 	// global setup
 	dbSession, err = r.Connect(map[string]interface{}{
-		"address":  os.Getenv("TEST_DB_HOST"),
-		"database": os.Getenv("TEST_DB_NAME"),
+		"address":  dbAddress,
+		"database": dbName,
 	})
 
 	if err != nil {
