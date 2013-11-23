@@ -27,90 +27,57 @@ module.exports = function(grunt) {
 			}
 		},
 
+		clean: [".tmp", "dist"],
+
+		copy: {
+			main: {
+				src: 'src/index.html',
+				dest: 'dist/index.html',
+			},
+		},
+
 		less: {
 			dev: {
-				options: {
-					// paths: ["assets/css"]
-				},
 				files: {
 					"src/public/css/app/main.css": "src/public/css/app/main.less"
-				}
-			},
-			dist: {
-				options: {
-					// paths: ["assets/css"],
-					cleancss: true
-				},
-				files: {
-					"dist/public/css/app/main.min.css": "src/public/css/app/*.less"
 				}
 			}
 		},
 
 		jshint: {
-			all: ['Gruntfile.js', 'src/public/app/**/*.js']
-		},
-
-		// concat JS files
-		concat: {
-			options: {
-				separator: ';',
-			},
-			distJSApp: {
-				src: [
-					'src/public/js/app/app.js',
-					'src/public/js/app/controllers/*.js',
-					'src/public/js/app/services/*.js'
-				],
-				dest: 'tmp/public/js/app.concat.js',
-			},
-			distJSLib: {
-				src: ['src/public/js/lib/*.js'],
-				dest: 'tmp/public/js/lib.concat.js'
-			}
+			all: ['src/public/app/**/*.js']
 		},
 
 		ngmin: {
 			all: {
-				src: ['tmp/public/js/app.concat.js'],
-				dest: 'tmp/public/js/app.ngmin.js'
+				src: ['.tmp/concat/js/app.js'],
+				dest: '.tmp/concat/js/app.js'
 			}
 		},
 
-		// minify CSS
-		// only lib files
-		// app files are using less
-		cssmin: {
-			distLib: {
-				files: {
-					'dist/public/css/lib/lib.min.css': ['src/public/css/lib/*.css']
-				}
-			}
+		useminPrepare: {
+			html: ['src/index.html']
 		},
 
-		// minify JS files
-		uglify: {
-			dist: {
-				files: [{
-					src: 'tmp/public/js/app.ngmin.js',
-					dest: 'dist/public/js/app.js'
-				}, {
-					src: 'tmp/public/js/lib.concat.js',
-					dest: 'dist/public/js/lib.js'
-				}]
-			}
+		usemin: {
+			html: ['dist/index.html']
 		}
+
 
 	});
 
 	// load tasks
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-usemin');
 	grunt.loadNpmTasks('grunt-ngmin');
+
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-goserver');
 
 	// custom tasks
@@ -125,7 +92,13 @@ module.exports = function(grunt) {
 	grunt.registerTask('jsmin', 'uglify');
 	grunt.registerTask('lint', 'jshint');
 
-	// TODO need to concat, then ngmin then minify
-	grunt.registerTask('dist', ['lint', 'concat', 'ngmin', 'jsmin', 'cssmin', 'less:dist']);
+	// grunt.registerTask('dist', ['lint', 'clean', 'concat', 'ngmin', 'jsmin', 'cssmin', 'less:dist']);
+	// clean dist and .tmp
+	// compile less
+	// generate usemin config from index.html
+	// concat all files and copy to .tmp
+	// uglify
+	// modify html (usemin)
+	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'concat', 'ngmin', 'uglify', 'cssmin', 'usemin']);
 
 };
