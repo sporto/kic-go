@@ -48,10 +48,32 @@ module.exports = function(grunt) {
 			all: ['src/public/app/**/*.js']
 		},
 
+		concat: {
+			// add templates.js into app.js
+			// this needs to run after concat:generated (created by usemin)
+			templates: {
+				src: ['.tmp/concat/js/app.js', '.tmp/templates.js'],
+				dest: '.tmp/concat/js/app.js'
+			}
+		},
+
 		ngmin: {
 			all: {
 				src: ['.tmp/concat/js/app.js'],
 				dest: '.tmp/concat/js/app.js'
+			}
+		},
+
+		// compiles angular tempaltes
+		// into a js file
+		ngtemplates: {
+			dist: {
+				src: 'src/public/views/**/*.html',
+				dest: '.tmp/templates.js',
+				options: {
+					// add the generated templates into concat:templates task
+					concat: 'templates'
+				}
 			}
 		},
 
@@ -76,6 +98,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-usemin');
 	grunt.loadNpmTasks('grunt-ngmin');
+	grunt.loadNpmTasks('grunt-angular-templates');
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-goserver');
@@ -99,6 +122,6 @@ module.exports = function(grunt) {
 	// concat all files and copy to .tmp
 	// uglify
 	// modify html (usemin)
-	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'concat', 'ngmin', 'uglify', 'cssmin', 'usemin']);
+	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'ngtemplates', 'concat:generated', 'concat:templates', 'ngmin', 'uglify', 'cssmin', 'usemin']);
 
 };
