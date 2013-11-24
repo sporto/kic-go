@@ -35,6 +35,6 @@ build:
     - mies/email-notify:
         from: alerts@wercker.com
         to: sebasporto@gmail.com
-        username: $USER
-        password: $PASS
-        host: smtp.gmail.com
+        username: $EMAIL_USERNAME
+        password: $EMAIL_PASSWORD
+        host: smtp.gmail.com:587
