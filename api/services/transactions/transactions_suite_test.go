@@ -8,12 +8,15 @@ import (
 	"testing"
 	"log"
 	"errors"
+	"os"
 )
 
 var dbSession *r.Session
 
 func TestTransactions(t *testing.T) {
 	RegisterFailHandler(Fail)
+
+	os.Setenv("ENV", "test")
 
 	err := errors.New("")
 	dbSession, err = api.StartDb("../../../")
