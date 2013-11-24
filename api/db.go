@@ -7,36 +7,73 @@ import (
 	"os"
 )
 
-func GetDbSession(path string) (dbSession *r.Session, err error) {
+func getDbSession() (dbSession *r.Session, err error) {
 
-	// load env
-	err = godotenv.Load(path + ".env")
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
-
-	dbAddress := ""
-	dbName := ""
-
-	// log.Println("DB Host", os.Getenv("TEST_DB_HOST"))
-	// log.Println("DB Name", os.Getenv("TEST_DB_NAME"))
-
-	if os.Getenv("WERCKER") == "true" {
-		dbAddress = os.Getenv("WERCKER_RETHINKDB_URL")
-		dbName = os.Getenv("kic_test")
-	} else {
-		dbAddress = os.Getenv("TEST_DB_HOST")
-		dbName = os.Getenv("TEST_DB_NAME")
-	}
+	address, database := getDbConf()
 
 	// global setup
 	dbSession, err = r.Connect(map[string]interface{}{
-		"address":  dbAddress,
-		"database": dbName,
+		"address":  address,
+		"database": database,
 	})
 
 	if err != nil {
 		log.Fatal("Cannot connect to DB")
 	}
+
+	return
+}
+
+func initDb(dbSession *r.Session) error {
+
+	_, database := getDbConf()
+
+	_, err := r.DbCreate(database).Run(dbSession)
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = r.Db(database).TableCreate("accounts").Run(dbSession)
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = r.Db(database).TableCreate("transactions").Run(dbSession)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return nil
+}
+
+
+func getDbConf() (address string, database string) {
+	if os.Getenv("WERCKER") == "true" {
+		address = os.Getenv("WERCKER_RETHINKDB_URL")
+		database = "kic_test"
+	} else {
+		address = os.Getenv("TEST_DB_HOST")
+		database = os.Getenv("TEST_DB_NAME")
+	}
+	return
+}
+
+func StartDb(pathToRoot string) (dbSession *r.Session, err error) {
+	// load env
+	err = godotenv.Load(pathToRoot + ".env")
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+
+	dbSession, err = getDbSession()
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = initDb(dbSession)
+	if err != nil {
+		log.Println(err)
+	}
+
 	return
 }

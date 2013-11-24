@@ -1,10 +1,10 @@
 package main
 
 import (
-	r "github.com/dancannon/gorethink"
+	
 	"github.com/sporto/kic/api"
 	"github.com/stretchr/goweb"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"log"
 	"net"
 	"net/http"
@@ -17,45 +17,19 @@ const (
 	Address string = ":9000"
 )
 
-var sessionArray []*r.Session
+func main() {
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	// production don't use an env file
+	// 	log.Println("No .env file found")
+	// }
 
-func initDb() {
-	dbSession, err := r.Connect(map[string]interface{}{
-		"address":  os.Getenv("DB_HOST"),
-		"database": os.Getenv("DB_NAME"),
-	})
+	dbSession, err := api.StartDb("./")
 	if err != nil {
 		log.Fatal(err)
-		log.Println("Most likely RethinkDB is not running")
-		return
 	}
 
-	_, err = r.DbCreate("kic").Run(dbSession)
-	if err != nil {
-		log.Println(err)
-	}
-
-	_, err = r.Db("kic").TableCreate("accounts").Run(dbSession)
-	if err != nil {
-		log.Println(err)
-	}
-
-	_, err = r.Db("kic").TableCreate("transactions").Run(dbSession)
-	if err != nil {
-		log.Println(err)
-	}
-
-	sessionArray = append(sessionArray, dbSession)
-}
-
-func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	initDb()
-	api.MapRoutes(sessionArray)
+	api.MapRoutes(dbSession)
 
 	log.Print("Starting Goweb powered server...")
 

@@ -4,10 +4,8 @@ import (
 	"fmt"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
-	"log"
 )
 
 var _ = Describe("UpdateServ", func() {
@@ -16,12 +14,8 @@ var _ = Describe("UpdateServ", func() {
 		service    accounts.UpdateServ
 		createServ accounts.CreateServ
 		account    models.Account
+		err        error
 	)
-
-	dbSession, err := api.GetDbSession("../../../")
-	if err != nil {
-		log.Fatal("Cannot connect to DB")
-	}
 
 	BeforeEach(func() {
 		// create an account for testing

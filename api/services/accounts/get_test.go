@@ -4,10 +4,8 @@ import (
 	"fmt"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
-	"log"
 )
 
 var _ = Describe("GetServ", func() {
@@ -17,11 +15,6 @@ var _ = Describe("GetServ", func() {
 		accountId         string
 		createAccountServ accounts.CreateServ
 	)
-
-	dbSession, err := api.GetDbSession("../../../")
-	if err != nil {
-		log.Fatal("Cannot connect to DB")
-	}
 
 	BeforeEach(func() {
 		accountIn := new(models.Account)

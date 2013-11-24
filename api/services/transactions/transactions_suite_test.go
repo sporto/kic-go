@@ -16,11 +16,10 @@ func TestTransactions(t *testing.T) {
 	RegisterFailHandler(Fail)
 
 	err := errors.New("")
-	dbSession, err = api.GetDbSession("../../../")
+	dbSession, err = api.StartDb("../../../")
 	if err != nil {
 		log.Fatal("Cannot connect to DB")
 	}
-	// log.Println("dbSession", dbSession)
 
 	RunSpecs(t, "Transactions Suite")
 }

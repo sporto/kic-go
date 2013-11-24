@@ -2,10 +2,8 @@ package account_balances_test
 
 import (
 	"fmt"
-	"log"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sporto/kic/api"
 	"github.com/sporto/kic/api/lib/matchers"
 	"github.com/sporto/kic/api/models"
 	"github.com/sporto/kic/api/services/accounts"
@@ -19,12 +17,8 @@ var _ = Describe("AdjustServ", func() {
 		service    account_balances.AdjustServ
 		createServ accounts.CreateServ
 		account    models.Account
+		err        error
 	)
-
-	dbSession, err := api.GetDbSession("../../../")
-	if err != nil {
-		log.Fatal("Cannot connect to DB")
-	}
 
 	BeforeEach(func() {
 		// create an empty accountIn for testing

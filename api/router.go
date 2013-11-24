@@ -8,13 +8,13 @@ import (
 	gowebhttp "github.com/stretchr/goweb/http"
 )
 
-func MapRoutes(sessionArray []*r.Session) {
+func MapRoutes(dbSession *r.Session) {
 
-	accounts := &controllers.Accounts{DbSession: sessionArray[0]}
+	accounts := &controllers.Accounts{DbSession: dbSession}
 	goweb.MapController(accounts)
 	goweb.Map(gowebhttp.MethodPost, "/api/accounts/{id}/adjust", accounts.Adjust)
 
-	accountTransactions := &controllers.AccountTransactions{DbSession: sessionArray[0]}
+	accountTransactions := &controllers.AccountTransactions{DbSession: dbSession}
 	goweb.MapController(accountTransactions)
 
 	goweb.MapStatic("/public", "src/public")
