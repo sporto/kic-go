@@ -31,3 +31,10 @@ build:
         name: go test
         code: |
           go test ./...
+  after-steps:
+    - mies/email-notify:
+        from: alerts@wercker.com
+        to: sebasporto@gmail.com
+        username: $USER
+        password: $PASS
+        host: smtp.gmail.com
