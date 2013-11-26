@@ -23,7 +23,7 @@ var TaskOne = gofer.Register(gofer.Task{
 		}
 
 		account := &models.Account{
-			Name: "Nico",
+			Name: "Test",
 			LastInterestPaid: time.Now(),
 		}
 

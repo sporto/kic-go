@@ -61,15 +61,25 @@ func initDb(dbSession *r.Session) error {
 
 
 func getDbConf() (address string, database string) {
+	env := os.Getenv("ENV")
 	if os.Getenv("WERCKER") == "true" {
-		address = os.Getenv("WERCKER_RETHINKDB_URL")
-		database = "kic_test"
-	} else if os.Getenv("ENV") == "dev" {
-		address = os.Getenv("DB_HOST")
-		database = os.Getenv("DB_NAME")
-	} else {
-		address = os.Getenv("TEST_DB_HOST")
-		database = os.Getenv("TEST_DB_NAME")
+		env = "wercker"
+	}
+
+	// default to dev
+	address = os.Getenv("DEV_DB_HOST")
+	database = os.Getenv("DEV_DB_NAME")
+
+	switch env {
+		case "wercker":
+			address = os.Getenv("WERCKER_RETHINKDB_URL")
+			database = "kic_test"
+		case "test":
+			address = os.Getenv("TEST_DB_HOST")
+			database = os.Getenv("TEST_DB_NAME")
+		case "prod":
+			address = os.Getenv("PROD_DB_HOST")
+			database = os.Getenv("PROD_DB_NAME")
 	}
 	return
 }

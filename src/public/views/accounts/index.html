@@ -12,7 +12,7 @@
     <tr ng-repeat="account in accounts">
       <td><a ng-href="#/accounts/{{account.id}}">{{account.id}}</a></td>
       <td>{{account.name}}</td>
-      <td>{{account.lastInterestPaid}}</td>
+      <td>{{account.lastInterestPaid | date:'yyyy-MM-dd'}}</td>
       <td>{{account.currentBalance}}</td>
     </tr>
   </tbody>
