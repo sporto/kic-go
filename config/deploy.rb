@@ -1,7 +1,6 @@
 require 'mina/git'
 require "mina/rsync"
 
-
 set :domain,      '192.168.0.101'
 set :user,        'sebastian'
 set :repository,  'https://github.com/sporto/kic.git'
@@ -24,7 +23,6 @@ set :rsync_options, %w[
 
 task :deploy do
 	deploy do
-		
 		# invoke :clone
 		# rsync will copy all files to /usr/local/var/www/shared/deploy
 		invoke "rsync:deploy"
@@ -40,9 +38,9 @@ task :deploy do
 	end
 end
 
-task :clone do
-	invoke :'git:clone'
-end
+# task :clone do
+# 	invoke :'git:clone'
+# end
 
 # called by rsync:deploy
 task "rsync:stage" do

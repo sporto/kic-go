@@ -21,3 +21,14 @@ Install Ginkgo
 	go install github.com/onsi/ginkgo/ginkgo
 
 	ginkgo -r
+
+Deployment
+-----------
+
+npm init
+grunt dist
+rsync files to server
+stop go process
+build go
+start go process
+restart nginx
