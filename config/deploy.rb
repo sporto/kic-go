@@ -1,6 +1,8 @@
 require 'mina/git'
 require "mina/rsync"
 
+set :term_mode,   nil
+# set :term_mode,   :pretty
 set :domain,      '192.168.0.101'
 set :user,        'sebastian'
 set :repository,  'https://github.com/sporto/kic.git'
@@ -23,24 +25,26 @@ set :rsync_options, %w[
 
 task :deploy do
 	deploy do
-		# invoke :clone
+		invoke :'git:clone'
 		# rsync will copy all files to /usr/local/var/www/shared/deploy
-		invoke "rsync:deploy"
-		# invoke :build_fe
+		# invoke "rsync:deploy"
+		invoke :build_front_end
 		invoke :build_api
 
+		# These are instructions to start the app after it's been prepared.
 		to :launch do
 			invoke :stop_api
 			invoke :start_api
 			invoke :restart_nginx
 		end
 
+    # This optional block defines how a broken release should be cleaned up.
+		to :clean do
+			queue 'log "failed deployment"'
+		end
+
 	end
 end
-
-# task :clone do
-# 	invoke :'git:clone'
-# end
 
 # called by rsync:deploy
 task "rsync:stage" do
@@ -55,11 +59,13 @@ task :precompile do
 	end
 end
 
-task :build_fe do
+task :build_front_end do
 	# queue %[cd #{deploy_to}/current && npm install]
 	# queue %[cd #{deploy_to}/current && grunt dist]
-	queue 'npm install'
-	# queue 'grunt dist'
+	# in_directory "#{current_path}" do
+		queue 'npm install'
+		queue 'grunt dist'
+	# end
 end
 
 task :build_api do
