@@ -28,8 +28,5 @@ func (serv *AdjustAllServ) Run(dbSession *r.Session) (err error) {
 			break
 		}
 	}
-	// if err = rows.Err(); err != nil {
-	// 	fmt.Println("err:", err)
-	// }
 	return
 }

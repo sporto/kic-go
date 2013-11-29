@@ -13,6 +13,7 @@ var _ = Describe("CalculateInterestToPayServ", func() {
 
 	var (
 		serv accounts.CalculateInterestToPayServ
+
 	)
 
 	It("returns 0 if no date given", func() {
@@ -26,7 +27,7 @@ var _ = Describe("CalculateInterestToPayServ", func() {
 		d := now.AddDate(-1, 0, 0)
 		account := models.Account{CurrentBalance: 100, LastInterestPaid: d}
 		interest, _ := serv.Run(account)
-		Expect(interest).To(Equal(3.5))
+		Expect(interest).To(Equal(50.0))
 	})
 
 })

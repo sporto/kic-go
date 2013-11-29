@@ -14,10 +14,12 @@ import (
 var _ = Describe("AdjustServ", func() {
 
 	var (
-		service    account_balances.AdjustServ
-		createServ accounts.CreateServ
-		account    models.Account
-		err        error
+		service     account_balances.AdjustServ
+		createServ  accounts.CreateServ
+		getRateServ accounts.GetInterestRateServ
+		account     models.Account
+		err         error
+		rate        float64
 	)
 
 	BeforeEach(func() {
@@ -26,10 +28,12 @@ var _ = Describe("AdjustServ", func() {
 			CurrentBalance:   100,
 			LastInterestPaid: time.Now().AddDate(-1, 0, 0),
 		}
+		// create the account and get a ref
 		account, err = createServ.Run(dbSession, *accountIn)
 		if err != nil {
 			fmt.Println(err)
 		}
+		rate, err = getRateServ.Run(account)
 	})
 
 	It("saved the test account", func () {
@@ -51,7 +55,7 @@ var _ = Describe("AdjustServ", func() {
 
 	It("updates the current balance", func() {
 		accountOut, _, _ := service.Run(dbSession, account)
-		Expect(accountOut.CurrentBalance).To(Equal(103.5))
+		Expect(accountOut.CurrentBalance).To(Equal(100 + rate))
 	})
 
 	It("updates the last interest paid", func() {
@@ -62,12 +66,12 @@ var _ = Describe("AdjustServ", func() {
 	It("doesnt update the balance twice", func() {
 		accountOut, _, _ := service.Run(dbSession, account)
 		accountOut, _, _ = service.Run(dbSession, account)
-		Expect(accountOut.CurrentBalance).To(Equal(103.5))
+		Expect(accountOut.CurrentBalance).To(Equal(100 + rate))
 	})
 
 	It("creates a transaction", func () {
 		_, transaction, _ := service.Run(dbSession, account)
-		Expect(transaction.Credit).To(Equal(3.5))
+		Expect(transaction.Credit).To(Equal(rate))
 		Expect(transaction.Id).NotTo(BeEmpty())
 	})
 
