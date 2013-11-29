@@ -89,7 +89,7 @@ func StartDb(pathToRoot string) (dbSession *r.Session, err error) {
 	// load env
 	err = godotenv.Load(pathToRoot + ".env")
 	if err != nil {
-		log.Println("Error loading .env file")
+		log.Println("No .env file")
 	}
 
 	dbSession, err = getDbSession()

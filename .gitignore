@@ -1,5 +1,6 @@
 node_modules
 dist
+kic
 .tmp
 .sass-cache
 *.sublime-workspace

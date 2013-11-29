@@ -13,6 +13,10 @@ set :rsync_options, %w[
 	--recursive --delete --delete-excluded
 	--exclude .git*
 	--exclude /src/***
+	--exclude /api/***
+	--exclude *.go
+	--exclude /config/***
+	--exclude /tasks/***
 	--exclude kic.sublime-project
 	--exclude wercker.yml
 	--exclude Gemfile
@@ -22,13 +26,13 @@ set :rsync_options, %w[
 	--exclude Gruntfile.js
 	--exclude node_modules
 ]
+set :rsync_copy, "/usr/local/bin/rsync --archive --acls --xattrs"
 
 task :deploy do
 	deploy do
-		invoke :'git:clone'
 		# rsync will copy all files to /usr/local/var/www/shared/deploy
-		# invoke "rsync:deploy"
-		invoke :build_front_end
+		invoke "rsync:deploy"
+
 		invoke :build_api
 
 		# These are instructions to start the app after it's been prepared.
@@ -48,24 +52,18 @@ end
 
 # called by rsync:deploy
 task "rsync:stage" do
-	invoke "precompile"
+	invoke :precompile
 end
 
 task :precompile do
-	# rsync_stage => tmp/deploy
+	# this helps in the dev machine
+	# rsync_stage = tmp/deploy
 	Dir.chdir settings.rsync_stage do
 		system "npm", "install"
 		system "grunt", "dist"
+		system "go", "get"
+		system "go build -o kic"
 	end
-end
-
-task :build_front_end do
-	# queue %[cd #{deploy_to}/current && npm install]
-	# queue %[cd #{deploy_to}/current && grunt dist]
-	# in_directory "#{current_path}" do
-		queue 'npm install'
-		queue 'grunt dist'
-	# end
 end
 
 task :build_api do
