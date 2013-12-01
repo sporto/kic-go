@@ -67,19 +67,19 @@ func getDbConf() (address string, database string) {
 	}
 
 	// default to dev
-	address = os.Getenv("DEV_DB_HOST")
-	database = os.Getenv("DEV_DB_NAME")
+	address = os.Getenv("KIC_DEV_DB_HOST")
+	database = os.Getenv("KIC_DEV_DB_NAME")
 
 	switch env {
 		case "wercker":
 			address = os.Getenv("WERCKER_RETHINKDB_URL")
 			database = "kic_test"
 		case "test":
-			address = os.Getenv("TEST_DB_HOST")
-			database = os.Getenv("TEST_DB_NAME")
+			address = os.Getenv("KIC_TEST_DB_HOST")
+			database = os.Getenv("KIC_TEST_DB_NAME")
 		case "prod":
-			address = os.Getenv("PROD_DB_HOST")
-			database = os.Getenv("PROD_DB_NAME")
+			address = os.Getenv("KIC_PROD_DB_HOST")
+			database = os.Getenv("KIC_PROD_DB_NAME")
 	}
 	return
 }
