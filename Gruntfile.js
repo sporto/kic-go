@@ -64,10 +64,10 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// compiles angular tempaltes
+		// compiles angular templates
 		// into a js file
 		ngtemplates: {
-			dist: {
+			APP: {
 				src: 'src/public/views/**/*.html',
 				dest: '.tmp/templates.js',
 				options: {

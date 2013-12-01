@@ -8,7 +8,6 @@ set :user,        'sebastian'
 set :repository,  'https://github.com/sporto/kic.git'
 set :branch,      'master'
 set :deploy_to,   '/usr/local/var/www'
-set :nginx_path,  '/path/to/bin/nginx'
 set :rsync_options, %w[
 	--recursive --delete --delete-excluded
 	--exclude .git*
@@ -33,13 +32,11 @@ task :deploy do
 		# rsync will copy all files to /usr/local/var/www/shared/deploy
 		invoke "rsync:deploy"
 
-		invoke :build_api
-
 		# These are instructions to start the app after it's been prepared.
 		to :launch do
-			invoke :stop_api
-			invoke :start_api
-			invoke :restart_nginx
+			# invoke :stop_api
+			# invoke :start_api
+			# invoke :restart_nginx
 		end
 
     # This optional block defines how a broken release should be cleaned up.
@@ -59,26 +56,24 @@ task :precompile do
 	# this helps in the dev machine
 	# rsync_stage = tmp/deploy
 	Dir.chdir settings.rsync_stage do
-		system "npm", "install"
-		system "grunt", "dist"
-		system "go", "get"
+		system "npm install"
+		system "grunt dist"
+		system "go get"
 		system "go build -o kic"
 	end
 end
 
-task :build_api do
-	# queue 'go install main.go'
-end
-
 task :stop_api do
 	# queue 'main -SIG'
+	queue "launchctl unload ~/Library/LaunchAgents/com.sebasporto.kic.plist"
 end
 
 task :start_api do
-	# queue 'SOMETHING=ssks main'
+	# queue 'ENV=prod KIC_PROD_DB_HOST=localhost:28015 KIC_PROD_DB_NAME=kic kic'
+	queue "launchctl load ~/Library/LaunchAgents/com.sebasporto.kic.plist"
 end
 
 task :restart_nginx do
-	# /usr/local/bin/nginx
-	# queue "#{settings.nginx_path!}/sbin/nginx restart"
+	queue 'nginx -s stop'
+	queue 'nginx'
 end
