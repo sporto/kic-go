@@ -34,6 +34,12 @@ module.exports = function(grunt) {
 				src: 'src/index.html',
 				dest: 'dist/index.html',
 			},
+			templates: {
+				expand: true,
+				cwd: 'src/',
+				src: 'public/views/**',
+				dest: 'dist/',
+			}
 		},
 
 		less: {
@@ -61,19 +67,6 @@ module.exports = function(grunt) {
 			all: {
 				src: ['.tmp/concat/js/app.js'],
 				dest: '.tmp/concat/js/app.js'
-			}
-		},
-
-		// compiles angular templates
-		// into a js file
-		ngtemplates: {
-			APP: {
-				src: 'src/public/views/**/*.html',
-				dest: '.tmp/templates.js',
-				options: {
-					// add the generated templates into concat:templates task
-					concat: 'templates'
-				}
 			}
 		},
 
@@ -122,6 +115,6 @@ module.exports = function(grunt) {
 	// concat all files and copy to .tmp
 	// uglify
 	// modify html (usemin)
-	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'ngtemplates', 'concat:generated', 'concat:templates', 'ngmin', 'uglify', 'cssmin', 'usemin']);
+	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'concat:generated', 'ngmin', 'uglify', 'cssmin', 'usemin']);
 
 };
