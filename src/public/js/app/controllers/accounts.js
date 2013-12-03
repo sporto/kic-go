@@ -4,14 +4,12 @@
 	angular.module('APP')
 		.controller('AccountsIndexCtrl', function($scope, Account, logger, notifier) {
 			logger.info('Getting accounts');
-			// notifier.success('Getting accounts');
 			$scope.accounts = [];
 
 			Account.all().getList()
 				.then(function(accounts) {
-						logger.info(accounts)
+						logger.info(accounts);
 						$scope.accounts = accounts;
-						// notifier.success(accounts);
 					},
 					function errorCallback(err) {
 						logger.info('error');
@@ -24,7 +22,7 @@
 			$scope.id = $routeParams.accountId;
 			$scope.state = {
 				busy: false
-			}
+			};
 
 			getAccount();
 			getTransactions();
@@ -57,7 +55,7 @@
 					}, function (response) {
 						$scope.state.busy = false;
 						notifier.error(response.data.e);
-					})
+					});
 			}
 
 			function drawChart() {
@@ -83,7 +81,7 @@
 							data : values
 						}
 					]
-				}
+				};
 				var ctx = document.getElementById("chart").getContext("2d");
 				var myNewChart = new Chart(ctx).Line(data);
 			}

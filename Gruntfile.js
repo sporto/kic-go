@@ -51,7 +51,10 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			all: ['src/public/app/**/*.js']
+			options: {
+				reporter: require('jshint-stylish')
+			},
+			all: ['Gruntfile.js', 'src/public/js/app/**/*.js']
 		},
 
 		concat: {
@@ -73,15 +76,15 @@ module.exports = function(grunt) {
 		// compiles angular templates
 		// into a js file
 		// ngtemplates: {
-		// 	APP: {
-		// 		src: 'src/public/views/**/*.html',
-		// 		dest: '.tmp/templates.js',
-		// 		options: {
-		// 			// add the generated templates into concat:templates task
-		// 			concat: 'templates'
-		// 		}
-		// 	}
-		// },
+		//	APP: {
+		//		src: 'src/public/views/**/*.html',
+		//		dest: '.tmp/templates.js',
+		//		options: {
+		//			// add the generated templates into concat:templates task
+		//			concat: 'templates'
+		//		}
+		//	}
+		//},
 
 		useminPrepare: {
 			html: ['src/index.html']

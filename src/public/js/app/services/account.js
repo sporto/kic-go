@@ -11,7 +11,7 @@
 				one: function(id) {
 					return Restangular.one('accounts', id);
 				}
-			}
+			};
 		});
 
 }());

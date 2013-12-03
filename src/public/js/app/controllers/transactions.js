@@ -9,7 +9,7 @@
 			$scope.account = {};
 			$scope.state = {
 				busy: true
-			}
+			};
 
 			Account.one(id).get()
 				.then(function (account) {
@@ -21,7 +21,7 @@
 				accountId: $scope.account.id,
 				amount: 0,
 				kind: $routeParams.kind,
-			}
+			};
 
 			$scope.submit = function () {
 				$scope.state.busy = true;
@@ -42,7 +42,7 @@
 						notifier.error(response.data.e);
 						$scope.state.busy = false;
 					});
-			}
+			};
 		});
 
 }());
