@@ -70,6 +70,19 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// compiles angular templates
+		// into a js file
+		// ngtemplates: {
+		// 	APP: {
+		// 		src: 'src/public/views/**/*.html',
+		// 		dest: '.tmp/templates.js',
+		// 		options: {
+		// 			// add the generated templates into concat:templates task
+		// 			concat: 'templates'
+		// 		}
+		// 	}
+		// },
+
 		useminPrepare: {
 			html: ['src/index.html']
 		},
@@ -107,13 +120,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('jsmin', 'uglify');
 	grunt.registerTask('lint', 'jshint');
 
-	// grunt.registerTask('dist', ['lint', 'clean', 'concat', 'ngmin', 'jsmin', 'cssmin', 'less:dist']);
-	// clean dist and .tmp
-	// compile less
-	// generate usemin config from index.html
-	// concat all files and copy to .tmp
-	// uglify
-	// modify html (usemin)
+	// grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'ngtemplates', 'concat:generated', 'concat:templates', 'ngmin', 'uglify', 'cssmin', 'usemin']);
 	grunt.registerTask('dist', ['lint', 'clean', 'copy', 'less', 'useminPrepare', 'concat:generated', 'ngmin', 'uglify', 'cssmin', 'usemin']);
 
 };
