@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 
-	log.setLevel('info');
+	// log.setLevel('info');
 
 	var app = angular.module('APP', ['ngRoute', 'restangular']);
 
@@ -30,10 +30,6 @@
 				redirectTo: '/'
 			});
 
-		// Deal with CORS issues
-		// $httpProvider.defaults.useXDomain = true;
-		// delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
 		RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
 			// This is a get for a list
 			var newResponse;
@@ -47,9 +43,7 @@
 			}
 			return newResponse;
 		});
-
 	});
-
 
 	app.run(function(Restangular, apiBase) {
 		Restangular.setBaseUrl(apiBase);

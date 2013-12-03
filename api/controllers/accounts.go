@@ -19,6 +19,13 @@ func (c *Accounts) Path() string {
 	return "api/accounts"
 }
 
+// Before gets called before any other method.
+// func (r *Accounts) Before(ctx context.Context) error {
+// 	// set a Things specific header
+// 	ctx.HttpResponseWriter().Header().Set("X-Accounts-Controller", "true")
+// 	return nil
+// }
+
 func (c *Accounts) ReadMany(ctx context.Context) (err error) {
 	var accounts []models.Account
 

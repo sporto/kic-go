@@ -58,15 +58,15 @@ module.exports = function(grunt) {
 			// add templates.js into app.js
 			// this needs to run after concat:generated (created by usemin)
 			templates: {
-				src: ['.tmp/concat/js/app.js', '.tmp/templates.js'],
-				dest: '.tmp/concat/js/app.js'
+				src: ['.tmp/concat/public/js/app.js', '.tmp/templates.js'],
+				dest: '.tmp/concat/public/js/app.js'
 			}
 		},
 
 		ngmin: {
 			all: {
-				src: ['.tmp/concat/js/app.js'],
-				dest: '.tmp/concat/js/app.js'
+				src: ['.tmp/concat/public/js/app.js'],
+				dest: '.tmp/concat/public/js/app.js'
 			}
 		},
 
@@ -92,7 +92,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-usemin');
 	grunt.loadNpmTasks('grunt-ngmin');
 	grunt.loadNpmTasks('grunt-angular-templates');
-
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-goserver');
 

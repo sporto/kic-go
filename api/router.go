@@ -10,6 +10,13 @@ import (
 
 func MapRoutes(dbSession *r.Session) {
 
+	// before everything
+	// goweb.MapBefore(func(c context.Context) error {
+	// 	// authentication
+	// 	c.HttpResponseWriter().Header().Set("X-Custom-Header", "Authentication")
+	// 	return nil
+	// })
+
 	accounts := &controllers.Accounts{DbSession: dbSession}
 	goweb.MapController(accounts)
 	goweb.Map(gowebhttp.MethodPost, "/api/accounts/{id}/adjust", accounts.Adjust)
