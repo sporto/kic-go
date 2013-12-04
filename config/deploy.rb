@@ -52,9 +52,9 @@ task "rsync:stage" do
 	invoke :precompile
 end
 
+# precompile client and api in dev machine before sending to server
+# rsync_stage => tmp/deploy (in dev machine)
 task :precompile do
-	# this helps in the dev machine
-	# rsync_stage = tmp/deploy
 	Dir.chdir settings.rsync_stage do
 		system "npm install"
 		system "grunt dist"
@@ -64,12 +64,12 @@ task :precompile do
 end
 
 task :stop_api do
-	# queue 'main -SIG'
 	queue "launchctl unload ~/Library/LaunchAgents/com.sebasporto.kic.plist"
 end
 
 task :start_api do
-	# queue 'ENV=prod KIC_PROD_DB_HOST=localhost:28015 KIC_PROD_DB_NAME=kic kic'
+	# ENV variables must be set in the server
+	# e.g. ENV, KIC_PROD_DB_HOST, KIC_PROD_DB_NAME
 	queue "launchctl load ~/Library/LaunchAgents/com.sebasporto.kic.plist"
 end
 
