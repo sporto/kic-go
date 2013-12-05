@@ -38,4 +38,4 @@ build:
         to: $EMAIL_USERNAME
         username: $EMAIL_USERNAME
         password: $EMAIL_PASSWORD
-        host: smtp.gmail.com:587
+        host: smtp.gmail.com:465
