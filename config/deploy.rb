@@ -34,8 +34,8 @@ task :deploy do
 
 		# These are instructions to start the app after it's been prepared.
 		to :launch do
-			# invoke :stop_api
-			# invoke :start_api
+			invoke :stop_api
+			invoke :start_api
 			# invoke :restart_nginx
 		end
 
@@ -64,13 +64,13 @@ task :precompile do
 end
 
 task :stop_api do
-	queue "launchctl unload ~/Library/LaunchAgents/com.sebasporto.kic.plist"
+	queue "launchctl unload ~/Library/LaunchAgents/com.sebastianporto.kic.plist"
 end
 
 task :start_api do
 	# ENV variables must be set in the server
 	# e.g. ENV, KIC_PROD_DB_HOST, KIC_PROD_DB_NAME
-	queue "launchctl load ~/Library/LaunchAgents/com.sebasporto.kic.plist"
+	queue "launchctl load ~/Library/LaunchAgents/com.sebastianporto.kic.plist"
 end
 
 task :restart_nginx do
