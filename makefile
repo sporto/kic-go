@@ -1,3 +1,6 @@
+default:
+	go test -v ./...
+
 dist: dist-clean dist-copy dist-less dist-jsmin dist-cssmin
 
 dist-clean:
@@ -16,4 +19,3 @@ dist-jsmin:
 	-uglifyjs ./src/public/js/lib/**/*.js -o ./dist/js/lib.js -m
 
 dist-cssmin:
-

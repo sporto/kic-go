@@ -70,7 +70,6 @@ end
 
 task :start_api do
 	# ENV variables must be set in the server
-	# e.g. ENV, KIC_PROD_DB_HOST, KIC_PROD_DB_NAME
 	queue "launchctl load ~/Library/LaunchAgents/com.sebastianporto.kic.plist"
 end
 
