@@ -2,8 +2,7 @@ language: go
 go:
   - 1.2
 env:
-  - KIC_TEST_DB_HOST=localhost:28015
-  - KIC_TEST_DB_NAME=kic_test
+  - ENV=test KIC_TEST_DB_HOST=localhost:28015 KIC_TEST_DB_NAME=kic_test
 before_install:
   - sudo add-apt-repository ppa:rethinkdb/ppa -y
   - sudo apt-get update -qq
