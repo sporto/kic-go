@@ -20,9 +20,10 @@ func (c *AccountTransactions) Path() string {
 
 func (c *AccountTransactions) ReadMany(ctx context.Context) (err error) {
 
-	var transactions []models.Transaction
+	var transactions []models.Transaction  
+	accountId := ctx.PathValue("account_id")
 
-	rows, err := r.Table("transactions").OrderBy(r.Desc("createdAt")).Run(c.DbSession)
+	rows, err := r.Table("transactions").Filter(r.Row.Field("accountId").Eq(accountId)).OrderBy(r.Desc("createdAt")).Run(c.DbSession)
 
 	for rows.Next() {
 		var transaction models.Transaction
