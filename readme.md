@@ -1,8 +1,6 @@
 KIC
 ===
 
-[![wercker status](https://app.wercker.com/status/a32c249547feeb153cd6481fff4ce782/m "wercker status")](https://app.wercker.com/project/bykey/a32c249547feeb153cd6481fff4ce782)
-
 [![Build Status](https://travis-ci.org/sporto/kic.png?branch=master)](https://travis-ci.org/sporto/kic)
 
 Kids Investment Company
