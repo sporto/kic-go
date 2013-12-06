@@ -4,7 +4,6 @@ import (
 	r "github.com/dancannon/gorethink"
 	"github.com/joho/godotenv"
 	"log"
-	"os"
 )
 
 func getDbSession() (dbSession *r.Session, err error) {
@@ -61,26 +60,8 @@ func initDb(dbSession *r.Session) error {
 
 
 func getDbConf() (address string, database string) {
-	env := os.Getenv("ENV")
-	if os.Getenv("WERCKER") == "true" {
-		env = "wercker"
-	}
-
-	// default to dev
-	address = os.Getenv("KIC_DEV_DB_HOST")
-	database = os.Getenv("KIC_DEV_DB_NAME")
-
-	switch env {
-		case "wercker":
-			address = os.Getenv("WERCKER_RETHINKDB_URL")
-			database = "kic_test"
-		case "test":
-			address = os.Getenv("KIC_TEST_DB_HOST")
-			database = os.Getenv("KIC_TEST_DB_NAME")
-		case "prod":
-			address = os.Getenv("KIC_PROD_DB_HOST")
-			database = os.Getenv("KIC_PROD_DB_NAME")
-	}
+	address = GetConfigVar("DB_HOST")
+	database = GetConfigVar("DB_NAME")
 	return
 }
 

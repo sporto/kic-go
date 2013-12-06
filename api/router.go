@@ -24,8 +24,8 @@ func MapRoutes(dbSession *r.Session) {
 	accountTransactions := &controllers.AccountTransactions{DbSession: dbSession}
 	goweb.MapController(accountTransactions)
 
-	goweb.MapStatic("/public", "dist/public")
-	goweb.MapStaticFile("/", "dist/index.html")
+	goweb.MapStatic("/public", "src/public")
+	goweb.MapStaticFile("/", "src/index.html")
 	goweb.MapStaticFile("/favicon.ico", "src/favicon.ico")
 
 	// Catch-all handler for everything that we don't understand
