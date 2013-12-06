@@ -16,6 +16,7 @@ set :rsync_options, %w[
 	--exclude *.go
 	--exclude /config/***
 	--exclude /tasks/***
+	--exclude /docs/***
 	--exclude kic.sublime-project
 	--exclude wercker.yml
 	--exclude Gemfile

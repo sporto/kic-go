@@ -70,34 +70,5 @@ Server configuration
 Server must be running rethinkdb in port as specified by the env variable KIC_PROD_DB_HOST.
 The go application must be launched using a daemon controller e.g. Upstart
 
-At the moment I am using a Mac server, so I am using launchd, example launchd plist
+At the moment I am using a Mac server, so I am using launchd, example launchd plist at docs/example.plist
 
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-  <dict>
-      <key>Label</key>
-      <string>com.sebastianporto.kic</string>
-      <key>ProgramArguments</key>
-      <array>
-          <string>/usr/local/var/www/current/kic</string>
-      </array>
-      <key>RunAtLoad</key>
-          <true/>
-      <key>KeepAlive</key>
-      <true/>
-          <key>StandardOutPath</key>
-          <string>/usr/local/var/www/kic_process.log</string>
-          <key>StandardErrorPath</key>
-          <string>/usr/local/var/www/kic_process.log</string>
-          <key>EnvironmentVariables</key>
-          <dict>
-                  <key>ENV</key>
-                  <string>prod</string>
-                  <key>KIC_PROD_DB_HOST</key>
-                  <string>localhost:28015</string>
-                  <key>KIC_PROD_DB_NAME</key>
-                  <string>kic</string>
-          </dict>
-  </dict>
-  </plist>
