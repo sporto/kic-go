@@ -26,6 +26,10 @@
 				templateUrl: 'public/views/transactions/new.html',
 				controller: 'TransactionsNewCtrl'
 			})
+			.when('/login', {
+				templateUrl: 'public/views/sessions/new.html',
+				controller: 'SessionsNewCtrl'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});

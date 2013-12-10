@@ -1,0 +1,17 @@
+<div class="row">
+	<h2>Login</h2>
+	<form name="sessionForm" role="form">
+		<div class="form-group" ng-class="{'has-error': true}">
+			<label class="control-label" for="amount">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="Password" ng-model="user.password" required />
+
+			<span class="help-block" ng-show="sessionForm.amount.$dirty && sessionForm.amount.$invalid">
+				<span ng-show="sessionForm.amount.$error.required">Required</span>
+			</span>
+
+		</div>
+
+		<button type="button" class="btn btn-default" ng-click='login()' ng-disabled="sessionForm.$invalid">Login</button>
+			&nbsp;
+	</form>
+</div>

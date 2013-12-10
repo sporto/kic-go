@@ -32,8 +32,12 @@
 
 <div class="row" ng-hide="state.busy">
 	<a class="btn btn-default" ng-click="refreshInterest()">Refresh Interest</a>
-	<a class="btn btn-default" ng-href="#accounts/{{id}}/transactions/new?kind=deposit">New Deposit</a>
-	<a class="btn btn-default" ng-href="#accounts/{{id}}/transactions/new?kind=withdrawal">New Withdrawal</a>
+	<a class="btn btn-default" 
+		ng-show="{{canDo('Transaction', 'create')}}" 
+		ng-href="#accounts/{{id}}/transactions/new?kind=deposit">New Deposit</a>
+	<a class="btn btn-default" 
+		ng-show="{{canDo('Transaction', 'create')}}" 
+		ng-href="#accounts/{{id}}/transactions/new?kind=withdrawal">New Withdrawal</a>
 </div>
 
 <br />

@@ -18,11 +18,12 @@
 					});
 
 		})
-		.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier) {
+		.controller('AccountsShowCtrl', function($scope, $routeParams, Account, logger, notifier, authServ) {
 			$scope.id = $routeParams.accountId;
 			$scope.state = {
 				busy: false
 			};
+			$scope.canDo = authServ.canDo;
 
 			getAccount();
 			getTransactions();
