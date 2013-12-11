@@ -13,7 +13,7 @@
 				authServ.logOut();
 				notifier.success("Logged out");
 				$location.path('/');
-			}
+			};
 
 		});
 }());

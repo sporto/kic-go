@@ -35,7 +35,7 @@
 				setLoggedIn:    setLoggedIn,
 				logOut:         logOut,
 				getCurrentUser: getCurrentUser
-			}
+			};
 		});
 
 }());

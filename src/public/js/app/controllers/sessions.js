@@ -6,7 +6,7 @@
 
 			$scope.user = {
 				password: ''
-			}
+			};
 
 			$scope.login = function () {
 				if ($scope.user.password === '123') {
@@ -16,7 +16,7 @@
 				} else {
 					notifier.error('Wrong');
 				}
-			}
+			};
 		});
 
 }());
