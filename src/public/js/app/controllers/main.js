@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('APP')
-		.controller('MainCtrl', function($scope, authServ, notifier) {
+		.controller('MainCtrl', function($scope, $location, authServ, notifier) {
 
 			$scope.$watch(authServ.isLoggedIn, function (isLoggedIn) {
 				// console.log('isLoggedIn', isLoggedIn)
