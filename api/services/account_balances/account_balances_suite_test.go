@@ -13,7 +13,7 @@ import (
 
 var dbSession *r.Session
 
-func TestAccount_balances(t *testing.T) {
+func TestAccountBalances(t *testing.T) {
 	RegisterFailHandler(Fail)
 
 	os.Setenv("ENV", "test")
@@ -24,5 +24,5 @@ func TestAccount_balances(t *testing.T) {
 		log.Fatal("Cannot connect to DB")
 	}
 
-	RunSpecs(t, "Account_balances Suite")
+	RunSpecs(t, "AccountBalances Suite")
 }

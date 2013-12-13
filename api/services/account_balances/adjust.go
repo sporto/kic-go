@@ -18,9 +18,9 @@ func (serv *AdjustServ) Run(dbSession *r.Session, accountIn models.Account) (acc
 
 	interest, err := new(accounts.CalculateInterestToPayServ).Run(accountIn)
 	if err != nil {
+		log.Println(err)
 		return
 	}
-	log.Println("Interest", interest)
 
 	if interest > 0 {
 
@@ -36,6 +36,7 @@ func (serv *AdjustServ) Run(dbSession *r.Session, accountIn models.Account) (acc
 		createTransactionServ := &transactions.CreateServ{}
 		transactionOut, err = createTransactionServ.Run(dbSession, *transaction)
 		if err != nil {
+			log.Println(err)
 			return
 		}
 
@@ -45,10 +46,10 @@ func (serv *AdjustServ) Run(dbSession *r.Session, accountIn models.Account) (acc
 		updateAccountServ := &accounts.UpdateServ{}
 		accountOut, err = updateAccountServ.Run(dbSession, accountIn)
 		if err != nil {
+			log.Println(err)
 			return
 		}
 	} else {
-		log.Println("No interest - nothing to do")
 		accountOut = accountIn
 	}
 

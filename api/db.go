@@ -28,7 +28,7 @@ func getDbSession() (dbSession *r.Session, err error) {
 }
 
 func initDb(dbSession *r.Session) error {
-	log.Println("initDb")
+	// log.Println("initDb")
 
 	_, database := getDbConf()
 
@@ -36,23 +36,17 @@ func initDb(dbSession *r.Session) error {
 
 	_, err := r.DbCreate(database).Run(dbSession)
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
 	}
-
-	// check db
-	// _, err = r.Db(database).Run(dbSession)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 
 	_, err = r.Db(database).TableCreate("accounts").Run(dbSession)
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
 	}
 
 	_, err = r.Db(database).TableCreate("transactions").Run(dbSession)
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
 	}
 
 	return nil
@@ -66,7 +60,7 @@ func getDbConf() (address string, database string) {
 }
 
 func StartDb(pathToRoot string) (dbSession *r.Session, err error) {
-	log.Println("StartDb")
+	// log.Println("StartDb")
 	// load env
 	err = godotenv.Load(pathToRoot + ".env")
 	if err != nil {

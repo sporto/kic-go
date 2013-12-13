@@ -16,10 +16,11 @@ func (serv *CalculateInterestToPayServ) Run(account models.Account) (interest fl
 		return
 	}
 
-	log.Println("Duration", dur)
+	// log.Println("Duration", dur)
 
 	rate, err := new(GetInterestRateServ).Run(account)
 	if err != nil {
+		log.Println(err)
 		return
 	}
 	interest, err = new(misc.CalculateInterestServ).Run(account.CurrentBalance, dur, rate)
