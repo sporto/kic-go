@@ -1,0 +1,4 @@
+--require ./test/helper.js
+--reporter spec
+--ui bdd
+--timeout 10000

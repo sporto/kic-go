@@ -72,3 +72,8 @@ The go application must be launched using a daemon controller e.g. Upstart
 
 At the moment I am using a Mac server, so I am using launchd, example launchd plist at docs/example.plist
 
+Folders
+----------
+
+./test
+Integration testing files - Ran with Mocha and Zombie.js
