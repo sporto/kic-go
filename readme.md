@@ -11,11 +11,11 @@ Development
 
 In development Go takes care of serving all assets. Run the go application using:
 
-  go run main.go
+	go run main.go
 
-  or
+or
 
-  grunt dev
+	grunt dev
 
 Production
 ----------
@@ -30,14 +30,14 @@ Running Tasks
 
 Install Gofer
 
-  go get -u github.com/chuckpreslar/gofer/gofer
+	go get -u github.com/chuckpreslar/gofer/gofer
 
 Then
 
-  gofer accounts:create
+	gofer accounts:create
 
 
-Testing
+Testing Go API
 -------
 
 Install Ginkgo
@@ -48,21 +48,30 @@ Install Ginkgo
 
 	ginkgo -r
 
+Integration Testing
+-------------------
+
+	npm install mocha -g
+
+	env ENV=test go run main.go
+
+	npm test
+
 Deployment
 -----------
 
 To deploy
 
-  mina deploy
+	mina deploy
 
 This is the current deployment process:
 
-  - npm init
-  - grunt dist
-  - build main.go
-  - rsync files to server
-  - restart go process in server
-  - restart nginx?
+	- npm init
+	- grunt dist
+	- build main.go
+	- rsync files to server
+	- restart go process in server
+	- restart nginx?
 
 Server configuration
 ---------------------
