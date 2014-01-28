@@ -13,6 +13,7 @@ describe('Home Page', function(){
   	// console.log(browser)
     browser.visit('http://localhost:9000', function () {
       done();
+      expect(browser.statusCode).to.eq(200)
     });
   });
 

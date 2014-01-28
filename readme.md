@@ -52,6 +52,7 @@ Integration Testing
 -------------------
 
 	npm install mocha -g
+	npm install
 
 	env ENV=test go run main.go
 

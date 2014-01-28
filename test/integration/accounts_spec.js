@@ -10,19 +10,19 @@ describe('Accounts', function(){
   // });
 
 	// before all
-	before(function (done) {
-		browser.visit('http://localhost:9000', function () {
-			done();
-		});
-	});
+	// before(function (done) {
+	// 	browser.visit('http://localhost:9000', function () {
+	// 		done();
+	// 	});
+	// });
 
-	it('shows the account index page', function (done) {
-		browser.clickLink('Accounts')
-			.then(function () {
-				expect(browser.text("h1")).to.eq("Accounts");
-				done();
-			});
-	});
+	// it('shows the account index page', function (done) {
+	// 	browser.clickLink('Accounts')
+	// 		.then(function () {
+	// 			expect(browser.text("h1")).to.eq("Accounts");
+	// 			done();
+	// 		});
+	// });
 
 	// it('shows the account link')
 
