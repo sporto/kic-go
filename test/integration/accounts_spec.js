@@ -1,30 +1,32 @@
-describe('Accounts', function(){
-  // var browser;
+var r = require('rethinkdb');
 
-  // before(function () {
-  //    browser = new Zombie();
-  // });
+describe('Accounts', function() {
 
-  // after(function () {
-  //    browser.close();
-  // });
+	var account;
 
 	// before all
-	// before(function (done) {
-	// 	browser.visit('http://localhost:9000', function () {
-	// 		done();
-	// 	});
-	// });
+	before(function (done) {
 
-	// it('shows the account index page', function (done) {
-	// 	browser.clickLink('Accounts')
-	// 		.then(function () {
-	// 			expect(browser.text("h1")).to.eq("Accounts");
-	// 			done();
-	// 		});
-	// });
+		// add one account
+		
 
-	// it('shows the account link')
+		browser.visit('http://localhost:9000', function () {
+
+			browser.clickLink('Accounts')
+				.then(function () {
+					done();
+				});
+
+		});
+	});
+
+	it('shows the account index page', function (done) {
+		expect(browser.text("h1")).to.eq("Accounts");
+	});
+
+	it('shows the account link', function (done) {
+		// expect(browser.)
+	});
 
 	// it('shows the account show page')
 
