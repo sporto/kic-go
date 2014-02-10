@@ -13,5 +13,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mina
-  mina-rsync
+  mina (~> 0.3)
+  mina-rsync (~> 1.1)

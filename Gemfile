@@ -1,6 +1,7 @@
-# A sample Gemfile
 source "http://rubygems.org"
 
-# gem "rails"
-gem "mina"
-gem "mina-rsync"
+group :development, :test do
+	gem 'mina',          '~> 0.3'
+	gem 'mina-rsync',    '~> 1.1'
+end
+
